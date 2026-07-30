@@ -29,7 +29,7 @@ class GmgCoordinator(DataUpdateCoordinator):
         super().__init__(
             hass,
             _LOGGER,
-            name=f"Green Mountain Grill {grill._serial_number}",
+            name=f"Green Mountain Grill {grill.serial_number}",
             update_interval=timedelta(seconds=POLL_ACTIVE),
         )
 
@@ -46,7 +46,7 @@ class GmgCoordinator(DataUpdateCoordinator):
         if wanted != self.update_interval:
             _LOGGER.debug(
                 "GMG %s: poll interval %s -> %s",
-                self.grill._serial_number, self.update_interval, wanted,
+                self.grill.serial_number, self.update_interval, wanted,
             )
             # The base class reschedules the timer after every refresh, so the
             # new interval takes effect from the next cycle either way.

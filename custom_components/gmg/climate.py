@@ -121,7 +121,7 @@ class GmgGrill(_GmgClimateBase):
     )
 
     def __init__(self, coordinator) -> None:
-        super().__init__(coordinator, str(coordinator.grill._serial_number))
+        super().__init__(coordinator, str(coordinator.grill.serial_number))
 
     # --- what the grill is doing ------------------------------------------
 
@@ -213,7 +213,7 @@ class GmgGrillProbe(_GmgClimateBase):
     _attr_supported_features = ClimateEntityFeature.TARGET_TEMPERATURE
 
     def __init__(self, coordinator, number: int) -> None:
-        serial = coordinator.grill._serial_number
+        serial = coordinator.grill.serial_number
         super().__init__(coordinator, f"{serial}_probe_{number}")
         self._number = number
 

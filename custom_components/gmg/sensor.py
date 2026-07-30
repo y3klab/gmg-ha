@@ -67,7 +67,7 @@ class _GmgSensorBase(CoordinatorEntity, SensorEntity):
         super().__init__(coordinator)
         self._grill = coordinator.grill
         self._attr_name = f"Green Mountain Grill {label}"
-        self._attr_unique_id = f"{self._grill._serial_number}_{key_suffix}"
+        self._attr_unique_id = f"{self._grill.serial_number}_{key_suffix}"
         self._attr_icon = icon
 
     @property

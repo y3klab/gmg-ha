@@ -40,7 +40,7 @@ class GmgProbeConnection(CoordinatorEntity, BinarySensorEntity):
         self._probe = probe_count
         self._attr_name = f"Green Mountain Grill Probe {probe_count} Connection"
         self._attr_unique_id = (
-            f"{self._grill._serial_number}_probe_{probe_count}_connection")
+            f"{self._grill.serial_number}_probe_{probe_count}_connection")
 
     @property
     def _state(self) -> dict:
