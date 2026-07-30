@@ -1,0 +1,19 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Green Mountain Grill",
+        "description": "Optionally enter the grill's IP address (required when the grill is on a different VLAN than Home Assistant - broadcast discovery does not cross subnets). Leave blank for same-subnet broadcast discovery.",
+        "data": {
+          "host": "Grill IP address (optional)"
+        }
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "Already configured. Only a single configuration is possible."
+    },
+    "error": {
+      "no_devices_found": "No Green Mountain Grill was found on the network. Make sure it is powered on and on the same subnet as Home Assistant."
+    }
+  }
+}
