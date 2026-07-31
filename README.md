@@ -71,14 +71,12 @@ during ignition and empty when the fan stops.
 
 **All the credit for getting these grills into Home Assistant belongs to
 [@jwhitby91](https://github.com/jwhitby91)** - his integration is what put our Green Mountain
-grills into Home Assistant in the first place. 🙏
+Grills into Home Assistant in the first place. 🙏
 
-The original stopped loading on Home Assistant 2025.1 and newer: HA removed the long-deprecated
-climate constants (`HVAC_MODE_*`, `SUPPORT_TARGET_TEMPERATURE`, `TEMP_FAHRENHEIT`) that it
-imports, so the module raised `ImportError` before it could set up. That fix was offered back to
-the original repo as a pull request. The repo has been inactive since January 2023, so this
-carries the work forward instead - since substantially rewritten, with the protocol extracted to
-`gmg-local`, but it started there.
+That repo has been inactive since January 2023. A Home Assistant compatibility fix was
+[offered back to it](https://github.com/jwhitby91/gmg_home_assistant/pull/11) and is still open;
+this carries the work forward instead - substantially rewritten since, with the protocol
+extracted to `gmg-local`, but it started there.
 
 Protocol reference cross-checked against
 [`brandenc40/green-mountain-grill`](https://github.com/brandenc40/green-mountain-grill) (Go) and
