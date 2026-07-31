@@ -68,6 +68,12 @@ firmware string lives on the device (``sw_version``), not in an entity.
 bump manifest.json version → commit → tag vX.Y.Z → push tag → create a GitHub Release
 ```
 
+Release notes are **informative, succinct, friendly**: the tagline names what
+changed in plain words; the body opens by naming the thing, states facts
+declaratively with real commands and numbers, names any manual step plainly
+without softening it, and cuts process trivia (test counts, internal
+mechanics). Always state upgrade impact.
+
 `validate.yml` runs **hassfest** (HA's own manifest/structure check) and the **HACS action**
 on every push and weekly. Both must pass; the weekly run is there to catch breakage from
 Home Assistant releases rather than from our own commits.
