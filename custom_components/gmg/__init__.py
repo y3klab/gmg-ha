@@ -35,31 +35,6 @@ _RENAMED_ENTITIES = {
     ),
 }
 
-# Entities this integration used to create and no longer does, by unique_id
-# suffix. Their registry rows are deleted so they don't linger as permanently
-# unavailable entities. Like a rename, a removal needs an entry here.
-#
-#   api_version (1.2.0): a static protocol byte with no user value; the
-#   firmware string on the device page replaced it as the identifying detail.
-_RETIRED_ENTITIES = {"api_version"}
-
-
-async def _async_remove_retired_entities(
-    hass: HomeAssistant, entry: ConfigEntry
-) -> None:
-    """Delete registry rows for entities the integration no longer provides."""
-    registry = er.async_get(hass)
-
-    for item in er.async_entries_for_config_entry(registry, entry.entry_id):
-        for suffix in _RETIRED_ENTITIES:
-            if item.unique_id.endswith(f"_{suffix}"):
-                registry.async_remove(item.entity_id)
-                _LOGGER.info(
-                    "Removed retired entity %s (unique_id %s)",
-                    item.entity_id,
-                    item.unique_id,
-                )
-
 
 async def _async_migrate_renamed_entities(
     hass: HomeAssistant, entry: ConfigEntry
@@ -122,7 +97,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     with backoff, rather than loading an entry with zero entities behind it.
     """
     await _async_migrate_renamed_entities(hass, entry)
-    await _async_remove_retired_entities(hass, entry)
 
     all_grills = await hass.async_add_executor_job(
         grills, 2, "0.0.0.0", entry.data.get("host")

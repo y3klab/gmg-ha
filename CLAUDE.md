@@ -78,9 +78,7 @@ Home Assistant releases rather than from our own commits.
   wire-format bug is fixed in `gmg-local` and picked up by a version bump.
 - **Don't change the `gmg` domain.** It is permanent in practice - every entity_id and
   config entry depends on it.
-- **Don't rename an entity without a migration entry** (`_RENAMED_ENTITIES`), and
-  **don't drop one without a `_RETIRED_ENTITIES` entry** - otherwise its registry
-  row lingers forever as a dead, permanently-unavailable entity.
+- **Don't rename an entity without a migration entry.**
 - **Don't add HA-specific behaviour to `gmg-local`** to make something here easier. That
   library is deliberately usable without Home Assistant.
 
