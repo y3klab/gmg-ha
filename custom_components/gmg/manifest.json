@@ -11,7 +11,7 @@
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/y3klab/gmg-ha/issues",
   "requirements": [
-    "gmg-local==0.2.0"
+    "gmg-local==0.3.0"
   ],
-  "version": "1.1.0"
+  "version": "1.2.0"
 }

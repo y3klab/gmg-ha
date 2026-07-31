@@ -14,7 +14,7 @@ from homeassistant.components.sensor import (
     SensorEntity,
     SensorStateClass,
 )
-from homeassistant.const import PERCENTAGE, EntityCategory, UnitOfTemperature
+from homeassistant.const import PERCENTAGE, UnitOfTemperature
 
 from .entity import GmgEntity
 from .const import DOMAIN
@@ -48,7 +48,6 @@ def _build_entities(coordinator):
         GmgEnumSensor(coordinator, "Power State", "power_state",
                       "powerState", POWER_STATE, "mdi:power"),
         GmgFirePercentSensor(coordinator),
-        GmgApiVersionSensor(coordinator),
     ]
 
 
@@ -117,19 +116,6 @@ class GmgFirePercentSensor(_GmgSensorBase):
     @property
     def native_value(self):
         return self._state.get("fireStatePercentage")
-
-
-class GmgApiVersionSensor(_GmgSensorBase):
-    """Grill protocol/API version - a static diagnostic value (byte 8)."""
-
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
-
-    def __init__(self, coordinator) -> None:
-        super().__init__(coordinator, "API Version", "api_version", "mdi:chip")
-
-    @property
-    def native_value(self):
-        return self._state.get("apiVersion")
 
 
 class GmgTempSensor(_GmgSensorBase):

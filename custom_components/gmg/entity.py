@@ -45,6 +45,10 @@ class GmgEntity(CoordinatorEntity):
             name=DEVICE_NAME,
             manufacturer=MANUFACTURER,
             serial_number=serial,
+            # Fetched once at setup (see __init__.py). Verbatim from the
+            # grill's UN! reply, e.g. "UNJB02SUF0_2.3" - the library
+            # deliberately does not strip the possible command echo.
+            sw_version=self._grill.firmware_version or None,
         )
 
     @property

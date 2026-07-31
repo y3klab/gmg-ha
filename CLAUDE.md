@@ -6,8 +6,8 @@ A Home Assistant custom integration for Green Mountain Grills Wi-Fi pellet grill
 via HACS as a custom repository. Domain **`gmg`**.
 
 Protocol handling is **not here**. It lives in
-[`gmg-local`](https://pypi.org/project/gmg-local/), pinned in `manifest.json` as
-`"requirements": ["gmg-local==0.1.0"]`.
+[`gmg-local`](https://pypi.org/project/gmg-local/), version-pinned in
+`manifest.json` under `"requirements"`.
 
 ## Structure
 
@@ -16,12 +16,13 @@ custom_components/gmg/
   __init__.py       setup, one shared coordinator per grill, entity migrations
   coordinator.py    DataUpdateCoordinator, adaptive poll interval
   climate.py        grill + 2 probes
-  sensor.py         8 sensors      binary_sensor.py  2 probe-connectivity sensors
+  sensor.py         7 sensors      binary_sensor.py  2 probe-connectivity sensors
   config_flow.py    UI setup, YAML import
   const.py  manifest.json  strings.json  translations/  brand/
 ```
 
-13 entities for a two-probe grill: 3 climate, 8 sensor, 2 binary_sensor.
+12 entities for a two-probe grill: 3 climate, 7 sensor, 2 binary_sensor. The
+firmware string lives on the device (``sw_version``), not in an entity.
 
 ## Conventions
 
@@ -77,7 +78,9 @@ Home Assistant releases rather than from our own commits.
   wire-format bug is fixed in `gmg-local` and picked up by a version bump.
 - **Don't change the `gmg` domain.** It is permanent in practice - every entity_id and
   config entry depends on it.
-- **Don't rename an entity without a migration entry.**
+- **Don't rename an entity without a migration entry** (`_RENAMED_ENTITIES`), and
+  **don't drop one without a `_RETIRED_ENTITIES` entry** - otherwise its registry
+  row lingers forever as a dead, permanently-unavailable entity.
 - **Don't add HA-specific behaviour to `gmg-local`** to make something here easier. That
   library is deliberately usable without Home Assistant.
 

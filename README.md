@@ -32,7 +32,7 @@ tell you. That is fixed here, and it is not the only thing:
 | domain | entities |
 |---|---|
 | `climate` | grill, probe 1, probe 2 |
-| `sensor` | grill / probe 1 / probe 2 temperature, fire state, warning, power state, fire state progress, API version |
+| `sensor` | grill / probe 1 / probe 2 temperature, fire state, warning, power state, fire state progress |
 | `binary_sensor` | probe 1 connection, probe 2 connection |
 
 ## Install
