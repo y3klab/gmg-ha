@@ -13,6 +13,8 @@ from typing import Any
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
+from gmg_local import model_for
+
 from .const import DOMAIN
 
 # The company is "Green Mountain Grills", plural. A single appliance is a
@@ -49,6 +51,8 @@ class GmgEntity(CoordinatorEntity):
             # grill's UN! reply, e.g. "UNJB02SUF0_2.3" - the library
             # deliberately does not strip the possible command echo.
             sw_version=self._grill.firmware_version or None,
+            # None (omitted) when the firmware prefix is unrecognised.
+            model=model_for(self._grill.firmware_version),
         )
 
     @property
