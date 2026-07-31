@@ -15,8 +15,8 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.const import PERCENTAGE, EntityCategory, UnitOfTemperature
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
+from .entity import GmgEntity
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
@@ -60,20 +60,18 @@ async def async_setup_entry(hass, entry, async_add_entities):
     async_add_entities(entities)
 
 
-class _GmgSensorBase(CoordinatorEntity, SensorEntity):
+class _GmgSensorBase(GmgEntity, SensorEntity):
     """Shared plumbing: read the coordinator's shared status, never poll."""
 
     def __init__(self, coordinator, label, key_suffix, icon) -> None:
-        super().__init__(coordinator)
-        self._grill = coordinator.grill
-        self._attr_name = f"Green Mountain Grill {label}"
-        self._attr_unique_id = f"{self._grill.serial_number}_{key_suffix}"
+        super().__init__(coordinator, key_suffix)
+        self._attr_name = label
         self._attr_icon = icon
 
     @property
     def _state(self) -> dict:
         """Latest shared status from the coordinator."""
-        return self.coordinator.data or {}
+        return self._status
 
 
 class GmgEnumSensor(_GmgSensorBase):

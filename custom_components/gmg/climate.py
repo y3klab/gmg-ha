@@ -20,9 +20,9 @@ from homeassistant.config_entries import SOURCE_IMPORT, ConfigEntry
 from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
+from .entity import GmgEntity
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -66,32 +66,15 @@ async def async_setup_entry(
     async_add_entities(entities)
 
 
-class _GmgClimateBase(CoordinatorEntity, ClimateEntity):
+class _GmgClimateBase(GmgEntity, ClimateEntity):
     """Shared plumbing: read the coordinator, never poll.
 
-    Both entity types are named after the grill's serial, report Fahrenheit
-    (the wire format is Fahrenheit regardless of what the app displays), and
-    take their unique_id from the same place.
+    Both report Fahrenheit - the wire format is Fahrenheit regardless of what
+    the app displays.
     """
 
     _attr_temperature_unit = UnitOfTemperature.FAHRENHEIT
     _enable_turn_on_off_backwards_compatibility = False
-
-    def __init__(self, coordinator, unique_id: str) -> None:
-        super().__init__(coordinator)
-        self._grill = coordinator.grill
-        self._attr_unique_id = unique_id
-        self._attr_name = unique_id
-
-    @property
-    def _status(self) -> dict[str, Any]:
-        """Most recent status the coordinator fetched, empty before first poll."""
-        return self.coordinator.data or {}
-
-    @property
-    def _power(self) -> int | None:
-        """The grill's power byte, whatever else this entity represents."""
-        return self._status.get("powerState")
 
     async def _push(self, func, *args) -> bool:
         """Run a blocking grill call off the event loop, then refresh.
@@ -120,8 +103,12 @@ class GmgGrill(_GmgClimateBase):
         | ClimateEntityFeature.TURN_OFF
     )
 
+    # The primary entity of the device: `None` means "just the device name",
+    # so this reads as "Green Mountain Grill" rather than "... Grill Grill".
+    _attr_name = None
+
     def __init__(self, coordinator) -> None:
-        super().__init__(coordinator, str(coordinator.grill.serial_number))
+        super().__init__(coordinator)
 
     # --- what the grill is doing ------------------------------------------
 
@@ -213,8 +200,8 @@ class GmgGrillProbe(_GmgClimateBase):
     _attr_supported_features = ClimateEntityFeature.TARGET_TEMPERATURE
 
     def __init__(self, coordinator, number: int) -> None:
-        serial = coordinator.grill.serial_number
-        super().__init__(coordinator, f"{serial}_probe_{number}")
+        super().__init__(coordinator, f"probe_{number}")
+        self._attr_name = f"Probe {number}"
         self._number = number
 
     # --- reading -----------------------------------------------------------

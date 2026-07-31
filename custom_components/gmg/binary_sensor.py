@@ -13,8 +13,8 @@ from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,
     BinarySensorEntity,
 )
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
+from .entity import GmgEntity
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
@@ -29,23 +29,20 @@ async def async_setup_entry(hass, entry, async_add_entities):
     async_add_entities(entities)
 
 
-class GmgProbeConnection(CoordinatorEntity, BinarySensorEntity):
+class GmgProbeConnection(GmgEntity, BinarySensorEntity):
     """True when a food probe is plugged in (reading a valid temperature)."""
 
     _attr_device_class = BinarySensorDeviceClass.CONNECTIVITY
 
     def __init__(self, coordinator, probe_count) -> None:
-        super().__init__(coordinator)
-        self._grill = coordinator.grill
+        super().__init__(coordinator, f"probe_{probe_count}_connection")
         self._probe = probe_count
-        self._attr_name = f"Green Mountain Grill Probe {probe_count} Connection"
-        self._attr_unique_id = (
-            f"{self._grill.serial_number}_probe_{probe_count}_connection")
+        self._attr_name = f"Probe {probe_count} Connection"
 
     @property
     def _state(self) -> dict:
         """Latest shared status from the coordinator."""
-        return self.coordinator.data or {}
+        return self._status
 
     @property
     def is_on(self):
