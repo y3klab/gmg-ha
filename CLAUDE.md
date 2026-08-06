@@ -54,10 +54,16 @@ firmware string lives on the device (``sw_version``), not in an entity.
   took, and verifies the read-back afterwards.
 - **The spec plate rates 150-550 °F; this exposes 150-500.** Whether the ceiling is ours or
   the grill's API is unverified. A limit the firmware enforces is not ours to raise.
-- **`no usable status from grill ... after 5 tries` appears roughly hourly.** Pre-existing
-  and unexplained; not caused by any recent change. Don't read a recurrence as a regression,
-  and don't read a short clean window as a fix - at ~1 per 4.6 h, a 30-minute sample proves
-  nothing.
+- **`no usable status from grill ... after 5 tries` is a grill-side fault, ~1 per 3.7 h.**
+  Diagnosed 2026-07-30, not caused by anything here. Onset is Poisson (no periodicity at any
+  period 10 min - 24 h), so nothing scheduled is contending; and independent packet loss is
+  refuted by arithmetic, since all 5 retries failing would need a 34% loss rate. 30 of 32
+  events carry an identical `(4 silent, 1 too short: [1])` signature - **a one-byte datagram**,
+  which must have been generated that way because a corrupted frame never reaches a socket.
+  Episodes last ~6.4 s, measured twice to within 21 ms. **Don't read a recurrence as a
+  regression, and don't read a short clean window as a fix** - at 1 per 3.7 h a 30-minute
+  sample proves nothing. Full analysis and the packet-capture test that would identify the
+  emitting device are in the private notes.
 - **`/api/config` `state` does not prove a restart happened.** It can return `RUNNING`
   seconds into a restart that hasn't begun. Gate on a log line timestamped after the
   command.
