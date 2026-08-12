@@ -51,30 +51,36 @@ Home Assistant needs to reach PyPI on first start after installing or upgrading.
 ## The 0-1-2-3 startup cycle
 
 When the grill lights, its panel counts 0-1-2-3 through a fixed-timer ignition sequence,
-then switches to the temperature readout - well before the fire is actually established:
+then becomes the temperature readout while the fire finishes establishing:
+
+![The 0-1-2-3 startup cycle: what each panel stage runs, for how long, and the climb to 150 °F where the fire state flips to Running](docs/startup-cycle.svg)
+
+<details>
+<summary>Plain-text version</summary>
 
 ```text
-┌─────────┬───────────────┬─────────┬─────────────────────────────────────────────┐
-│ DISPLAY │ PARTS WORKING │ TIME    │ FUNCTION                                    │
-├─────────┼───────────────┼─────────┼─────────────────────────────────────────────┤
-│    0    │ auger         │ 45-60 s │ push a starter charge into the firebox      │
-│    1    │ igniter       │ 90 s    │ heat the charge                             │
-│    2    │ fan + igniter │ 30 s    │ fan the charge into flame                   │
-│    3    │ fan + igniter │ 30 s    │ hold for proof of fire (ambient + 5 °F)     │
-└─────────┴───────────────┴─────────┴─────────────────────────────────────────────┘
-     │
-     ▼  panel switches to the temperature readout - the pit is still cold here
-     │
-     │  igniter cuts off; the auger meters pellets to ramp the pit
-     ▼
-   150 °F  →  fire state flips to RUNNING, normal temperature control begins
+┌─────────┬───────────────┬──────────────┬─────────────────────────────────────────┐
+│ display │ hardware      │ time         │ function                                │
+├─────────┼───────────────┼──────────────┼─────────────────────────────────────────┤
+│    0    │ auger         │ 45-60 s      │ load the firebox with pellets           │
+│    1    │ igniter       │ 90 s         │ heat the pellets                        │
+│    2    │ fan + igniter │ 30 s         │ fan the pellets into flame              │
+│    3    │ fan + igniter │ 30 s         │ establish proof of fire: a 5 °F rise    │
+│  temp   │ fan + igniter │ until +5 °F  │ still proving the fire                  │
+│  temp   │ fan + auger   │ until 150 °F │ igniter off; the auger feeds the fire   │
+└─────────┴───────────────┴──────────────┴─────────────────────────────────────────┘
+  at 150 °F the fire state flips to RUNNING - normal temperature control begins
 ```
 
-Stage-0 auger time varies by model and ambient temperature. Sequence per
-[GMG's operating manuals](https://greenmountaingrills.com/manuals/) (the boxed rows are
-their startup-cycle chart, redrawn); the tail past the boxes is this project's own
-instrumented observation - the panel finishes its count with the pit still at ambient, and
-Running arrives when the pit reaches **150 °F**, regardless of setpoint.
+</details>
+
+Stage-0 auger time varies by model and ambient temperature. Rows 0-3 are from
+[GMG's operating manuals](https://greenmountaingrills.com/manuals/), redrawn; the `temp`
+rows and the 150 °F ending are this project's own instrumented observation. Stage 3's
+30 seconds is how long the *display* shows a 3 - the proof-of-fire wait itself continues
+under the temperature readout (about 10 minutes on an instrumented cold start), and a pit
+that never rises 5 °F within 20 minutes shows `FAL` instead. Running arrives when the pit
+reaches **150 °F**, regardless of setpoint.
 
 ## Fire state progress
 
