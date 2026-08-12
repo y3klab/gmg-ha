@@ -6,24 +6,27 @@
 Control and monitor a **Green Mountain Grills** Wi-Fi pellet grill from Home Assistant, over
 your own network. No cloud account, no vendor API, no internet.
 
-Protocol handling lives in [**gmg-local**](https://pypi.org/project/gmg-local/), a standalone
-library; this repository is the Home Assistant half.
+The code that talks to the grill over the network lives in
+[**gmg-local**](https://pypi.org/project/gmg-local/), a standalone library; this repository
+is the Home Assistant integration.
 
 ## Why you might want this
 
-The widely-installed GMG integrations read grill temperature from a **single byte**. Anything
-above 255 wraps, so a **350 °F grill reports as 94 °F** - the one number the device exists to
-tell you. That is fixed here, and it is not the only thing:
+Most public GMG integrations read grill temperature from a **single byte**. Anything above
+255 starts over from zero ("wraps"), so a **350 °F grill reports as 94 °F** - the most
+important number the grill reports. This integration fixes that, along with the following:
 
-- **Correct temperatures.** 16-bit little-endian, verified against a real grill.
-- **Survives short packets.** The grill occasionally answers with a truncated datagram. Parsing
-  one either raises or invents fields; this retries instead. Before that fix, a single stray
-  packet took every entity offline.
-- **One conversation at a time.** The grill serves a single client, so concurrent polls lose
-  messages. All I/O is serialised, and one shared coordinator polls once per cycle for every
-  entity rather than each entity polling for itself.
-- **Adaptive cadence.** ~10s while cooking, ~60s while off.
-- **Probes report `unknown` when unplugged** rather than a bogus 607 °F sentinel.
+- **Correct temperatures.** Read as full 16-bit values (two bytes, low byte first), verified
+  against a real grill.
+- **Survives short packets.** The grill occasionally answers with a truncated packet. Parsing
+  one either fails or invents fields; this integration retries instead. Before that fix, a
+  single short packet made every entity unavailable.
+- **One conversation at a time.** The grill answers a single client, so overlapping requests
+  lose messages. Requests go out one at a time, and one shared poller asks the grill once per
+  cycle on behalf of every entity rather than each entity polling for itself.
+- **Adaptive polling.** About every 10 seconds while cooking, every 60 seconds while off.
+- **Probes report `unknown` when unplugged** rather than 607 °F, the placeholder value the
+  grill sends when no probe is connected.
 
 ## Entities
 
@@ -43,7 +46,8 @@ tell you. That is fixed here, and it is not the only thing:
 **Manual:** copy `custom_components/gmg/` into your `config/custom_components/` and restart.
 
 Then **Settings → Devices & Services → Add Integration → Green Mountain Grills**. It discovers by
-UDP broadcast; if the grill is on a different VLAN, supply its IP and it will be probed directly.
+UDP broadcast; if the grill is on a different VLAN, supply its IP address and the integration
+will contact it directly.
 
 Requires Home Assistant **2026.5+**. The `gmg-local` dependency is installed automatically, so
 Home Assistant needs to reach PyPI on first start after installing or upgrading.
@@ -51,9 +55,9 @@ Home Assistant needs to reach PyPI on first start after installing or upgrading.
 ## The 0-1-2-3 startup cycle
 
 When the grill lights, its panel counts 0-1-2-3 through a fixed-timer ignition sequence,
-then becomes the temperature readout while the fire finishes establishing:
+then becomes the temperature readout while the fire becomes fully established:
 
-![The 0-1-2-3 startup cycle: what each panel stage runs, for how long, and the climb to 150 °F where the fire state flips to Running](docs/startup-cycle.svg)
+![The 0-1-2-3 startup cycle: which hardware each panel stage runs, for how long, and the climb to 150 °F where the fire state changes to Running](docs/startup-cycle.svg)
 
 <details>
 <summary>Plain-text version</summary>
@@ -76,32 +80,36 @@ then becomes the temperature readout while the fire finishes establishing:
 
 Stage-0 auger time varies by model and ambient temperature. Rows 0-3 are from
 [GMG's operating manuals](https://greenmountaingrills.com/manuals/), redrawn; the `temp`
-rows and the 150 °F ending are this project's own instrumented observation. Stage 3's
-30 seconds is how long the *display* shows a 3 - the proof-of-fire wait itself continues
-under the temperature readout (about 10 minutes on an instrumented cold start), and a pit
-that never rises 5 °F within 20 minutes shows `FAL` instead. Running arrives when the pit
-reaches **150 °F**, regardless of setpoint.
+rows and the 150 °F ending are this project's own measurements. Stage 3's 30 seconds is
+how long the *display* shows a 3 - the proof-of-fire wait itself continues under the
+temperature readout (about 10 minutes on a measured cold start), and a pit that never
+rises 5 °F within 20 minutes shows `FAL` instead. The fire state changes to Running when
+the pit reaches **150 °F**, no matter what target temperature is set.
 
 ## Fire state progress
 
-The `fire state progress` sensor exposes byte 33 of the status frame - what GMG's own cloud API
-calls `fireStateProgress`. It steps in four 25% increments through whatever state the grill is
-in: up through Startup, hitting 100 at the exact moment the grill switches to Running (150 °F,
-see above), then back down through Cool Down to 0 as the fan stops.
+The grill reports a fire state - Startup, Running, Cool Down - and a progress value beside
+it. The `fire state progress` sensor exposes that value, byte 33 of the grill's status reply -
+what GMG's own cloud API calls `fireStateProgress`. It steps in four 25% increments through
+whatever state the grill is in: up through Startup, hitting 100 at the exact moment the grill
+switches to Running (150 °F, see above), then back down through Cool Down to 0 as the fan
+stops.
 
-**It is not the panel's 0-1-2-3 cycle.** On an instrumented cold start the panel finished its
-count while this sensor sat at 50; the value kept climbing for another 15 minutes of fire
-establishment. What each 25% step physically marks is still unlabeled, deliberately. Other
+**It is not the panel's 0-1-2-3 cycle.** On a measured cold start the panel finished its
+count while this sensor sat at 50; the value kept climbing for another 15 minutes while the
+fire established. No one has established what each 25% step physically measures, so the
+steps are deliberately left unlabeled. Other
 implementations label this byte as a pellet-hopper level; it is not - a hopper does not fill
 during ignition and empty when the fan stops.
 
 ## Known hardware quirks
 
-- **Probe targets are silently discarded while the grill is off.** Write 203, read back 0, no
-  error. The integration blocks the write rather than showing a target the grill never took.
-- **The spec plate rates 150-550 °F; this exposes 150-500.** Which side owns the ceiling - the
-  integration's bounds or the grill's own API - is unverified, and a limit the firmware enforces
-  is not ours to raise.
+- **Probe targets are silently discarded while the grill is off.** Set a probe target of
+  203 °F while the grill is off: it reads back as 0, with no error. The integration blocks
+  the write rather than showing a target the grill never accepted.
+- **The label on the grill rates 150-550 °F; this integration exposes 150-500.** Whether that
+  ceiling comes from this integration's bounds or from the grill's own API is unverified, and
+  this integration does not raise a limit the grill's firmware may enforce.
 
 ## Credits
 
@@ -111,8 +119,8 @@ Grills into Home Assistant in the first place. 🙏
 
 That repo has been inactive since January 2023. A Home Assistant compatibility fix was
 [offered back to it](https://github.com/jwhitby91/gmg_home_assistant/pull/11) and is still open;
-this carries the work forward instead - substantially rewritten since, with the protocol
-extracted to `gmg-local`, but it started there.
+this project continues the work instead - substantially rewritten since, with the protocol
+code extracted to `gmg-local`, but it started there.
 
 Protocol reference cross-checked against
 [`brandenc40/green-mountain-grill`](https://github.com/brandenc40/green-mountain-grill) (Go) and
