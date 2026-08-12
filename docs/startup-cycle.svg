@@ -1,18 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 480" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
   <title>The 0-1-2-3 startup cycle - what the panel counts through, ending at 150 °F and RUNNING</title>
   <defs>
-    <!-- crown deliberately REVERSED from the section-10 magenta-to-cyan default:
-         the diagram's time axis runs cold-to-hot, so the ramp reads as the pit
-         warming (A3K section 3 temperature map; section 5 direction-follows-the-cue).
-         Do not "fix" this back. -->
+    <!-- crown: the JoP0 flame ramp - yellow tongue to ground-shadow red, all four
+         values measured from jop0-flame.png (the 2024 primary cut); the time axis
+         runs cold-to-hot, so the ramp reads as the pit heating up. -->
     <linearGradient id="ramp" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0"      stop-color="#00ffff"/>
-      <stop offset="0.1667" stop-color="#00d7ff"/>
-      <stop offset="0.3333" stop-color="#5fafff"/>
-      <stop offset="0.5"    stop-color="#875fff"/>
-      <stop offset="0.6667" stop-color="#af5fff"/>
-      <stop offset="0.8333" stop-color="#d75fd7"/>
-      <stop offset="1"      stop-color="#ff5fff"/>
+      <stop offset="0"    stop-color="#f8ef24"/>
+      <stop offset="0.45" stop-color="#f68d2a"/>
+      <stop offset="0.78" stop-color="#f15a25"/>
+      <stop offset="1"    stop-color="#e13926"/>
     </linearGradient>
   </defs>
 
@@ -76,5 +72,5 @@
   <line x1="32" y1="410" x2="848" y2="410" stroke="#2a2a3e" stroke-width="1"/>
 
   <!-- footer: the payoff -->
-  <text x="48" y="448" font-size="15"><tspan fill="#8a8aa6">at </tspan><tspan font-weight="bold" fill="#e8e8f4">150 °F</tspan><tspan fill="#8a8aa6"> the fire state flips to </tspan><tspan font-weight="bold" fill="#7ddc7d">RUNNING</tspan><tspan fill="#8a8aa6"> - normal temperature control begins</tspan></text>
+  <text x="48" y="448" font-size="15"><tspan fill="#8a8aa6">at </tspan><tspan font-weight="bold" fill="#e13926">150 °F</tspan><tspan fill="#8a8aa6"> the fire state flips to </tspan><tspan font-weight="bold" fill="#7ddc7d">RUNNING</tspan><tspan fill="#8a8aa6"> - normal temperature control begins</tspan></text>
 </svg>
