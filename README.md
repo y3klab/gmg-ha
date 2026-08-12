@@ -48,14 +48,44 @@ UDP broadcast; if the grill is on a different VLAN, supply its IP and it will be
 Requires Home Assistant **2026.5+**. The `gmg-local` dependency is installed automatically, so
 Home Assistant needs to reach PyPI on first start after installing or upgrading.
 
+## The 0-1-2-3 startup cycle
+
+When the grill lights, its panel counts 0-1-2-3 through a fixed-timer ignition sequence,
+then switches to the temperature readout - well before the fire is actually established:
+
+```text
+┌─────────┬───────────────┬─────────┬─────────────────────────────────────────────┐
+│ DISPLAY │ PARTS WORKING │ TIME    │ FUNCTION                                    │
+├─────────┼───────────────┼─────────┼─────────────────────────────────────────────┤
+│    0    │ auger         │ 45-60 s │ push a starter charge into the firebox      │
+│    1    │ igniter       │ 90 s    │ heat the charge                             │
+│    2    │ fan + igniter │ 30 s    │ fan the charge into flame                   │
+│    3    │ fan + igniter │ 30 s    │ hold for proof of fire (ambient + 5 °F)     │
+└─────────┴───────────────┴─────────┴─────────────────────────────────────────────┘
+     │
+     ▼  panel switches to the temperature readout - the pit is still cold here
+     │
+     │  igniter cuts off; the auger meters pellets to ramp the pit
+     ▼
+   150 °F  →  fire state flips to RUNNING, normal temperature control begins
+```
+
+Stage-0 auger time varies by model and ambient temperature. Sequence per
+[GMG's operating manuals](https://greenmountaingrills.com/manuals/) (the boxed rows are
+their startup-cycle chart, redrawn); the tail past the boxes is this project's own
+instrumented observation - the panel finishes its count with the pit still at ambient, and
+Running arrives when the pit reaches **150 °F**, regardless of setpoint.
+
 ## Fire state progress
 
 The `fire state progress` sensor exposes byte 33 of the status frame - what GMG's own cloud API
 calls `fireStateProgress`. It steps in four 25% increments through whatever state the grill is
-in: up through Startup, hitting 100 at the exact moment the grill switches to Running, then back
-down through Cool Down to 0 as the fan stops.
+in: up through Startup, hitting 100 at the exact moment the grill switches to Running (150 °F,
+see above), then back down through Cool Down to 0 as the fan stops.
 
-**What each step physically means is not known**, and is deliberately not guessed at. Other
+**It is not the panel's 0-1-2-3 cycle.** On an instrumented cold start the panel finished its
+count while this sensor sat at 50; the value kept climbing for another 15 minutes of fire
+establishment. What each 25% step physically marks is still unlabeled, deliberately. Other
 implementations label this byte as a pellet-hopper level; it is not - a hopper does not fill
 during ignition and empty when the fan stops.
 
