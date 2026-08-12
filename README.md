@@ -57,7 +57,10 @@ Home Assistant needs to reach PyPI on first start after installing or upgrading.
 When the grill lights, its panel counts 0-1-2-3 through a fixed-timer ignition sequence,
 then becomes the temperature readout while the fire becomes fully established:
 
-![The 0-1-2-3 startup cycle: which hardware each panel stage runs, for how long, and the climb to 150 °F where the fire state changes to Running](docs/startup-cycle.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/startup-cycle-dark.svg">
+  <img alt="The 0-1-2-3 startup cycle: which hardware each panel stage runs, for how long, and the climb to 150 °F where the fire state changes to Running" src="docs/startup-cycle-light.svg">
+</picture>
 
 <details>
 <summary>Plain-text version</summary>
