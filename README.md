@@ -135,9 +135,8 @@ Protocol reference cross-checked against
 </picture>
 
 Cooked up by the **JoP⁰ GRILL+CODE** team - the family barbecue brand's first venture
-into software. The logo's flame is
-[designed by Freepik](https://www.freepik.com); the JoPº logo artwork is not covered by
-this repository's MIT licence.
+into software. The JoPº logo is original artwork and is not covered by this
+repository's MIT licence.
 
 Not affiliated with or endorsed by Green Mountain Grills.
 
