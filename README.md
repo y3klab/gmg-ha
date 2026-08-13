@@ -104,8 +104,9 @@ unusually detailed questions about what the grill is doing and when.
 
 <img alt="JoPº GRILL+CODE" src="docs/jop0-grill-code-sticker.svg" width="180">
 
-Cooked up by the **JoPº GRILL+CODE** team. The JoPº logo is original artwork and is
-not covered by this repository's MIT license.
+Cooked up by the **JoPº GRILL+CODE** team - part of the [Y3K Lab](https://y3klab.com)
+brand family. The JoPº logo is original artwork and is not covered by this repository's
+MIT license.
 
 ## License
 
