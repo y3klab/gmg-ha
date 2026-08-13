@@ -10,10 +10,7 @@ The code that talks to the grill over the network lives in
 [**gmg-local**](https://pypi.org/project/gmg-local/), a standalone library; this repository
 is the Home Assistant integration.
 
-## Key features
-
-A pellet cook runs for hours, so the engineering's one job is to never need your
-attention while it runs:
+## Features
 
 - **Full climate control from Home Assistant.** The pit and both probes are climate
   entities - set the pit temperature and probe done-targets from any dashboard or
