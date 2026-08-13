@@ -4,7 +4,7 @@
 [![validate](https://github.com/y3klab/gmg-ha/actions/workflows/validate.yml/badge.svg)](https://github.com/y3klab/gmg-ha/actions/workflows/validate.yml)
 
 Control and monitor a **Green Mountain Grills** Wi-Fi pellet grill from Home Assistant, over
-your own network. No cloud account, no vendor API, no internet.
+your own network. No cloud account, no vendor API, no internet - just delicious data.
 
 The code that talks to the grill over the network lives in
 [**gmg-local**](https://pypi.org/project/gmg-local/), a standalone library; this repository
