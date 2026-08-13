@@ -33,8 +33,8 @@ is the Home Assistant integration.
 - **True temperatures:** the grill sends each temperature as two bytes; reading only
   one wraps every reading above 255 - a 350 °F pit reads as 94 °F. Both bytes are
   read, verified against a real grill.
-- **One conversation:** the grill answers a single client at a time, so one shared
-  poller asks it once per cycle for every entity.
+- **One client at a time:** that's all the grill can answer, so one shared poller
+  asks it once per cycle on behalf of every entity.
 - **No guessing:** a healthy status reply is 52 bytes; shorter replies are retried,
   never parsed - parsing one either fails or invents fields.
 - **Verified changes:** every change is read back and compared - the dial never shows
