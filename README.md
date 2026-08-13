@@ -41,7 +41,7 @@ is the Home Assistant integration.
   a number the grill didn't actually accept.
 - **Adaptive polling:** about every 10 seconds while the grill is on, every 60 while
   it's off - responsive during a cook, quiet overnight.
-- **Better data:** an unplugged probe reads `unknown`, not the grill's 607 °F
+- **Honest data:** an unplugged probe reads `unknown`, not the grill's 607 °F
   placeholder.
 
 ## Requirements
