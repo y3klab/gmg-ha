@@ -30,7 +30,7 @@ is the Home Assistant integration.
 
 ## Engineering
 
-- **True temperatures:** the grill sends each temperature as two bytes; reading only
+- **Accurate temperatures:** the grill sends each temperature as two bytes; reading only
   one wraps every reading above 255 - a 350 °F pit reads as 94 °F. Both bytes are
   read, verified against a real grill.
 - **Request coalescing:** the grill answers one client at a time, so the twelve
