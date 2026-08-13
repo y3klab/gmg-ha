@@ -10,23 +10,21 @@ The code that talks to the grill over the network lives in
 [**gmg-local**](https://pypi.org/project/gmg-local/), a standalone library; this repository
 is the Home Assistant integration.
 
-## Why you might want this
+## Built for long cooks
 
-Most public GMG integrations read grill temperature from a **single byte**. Anything above
-255 starts over from zero ("wraps"), so a **350 °F grill reports as 94 °F** - the most
-important number the grill reports. This integration fixes that, along with the following:
+A pellet cook runs for hours, and the point of watching it from Home Assistant is not
+having to think about the software while it runs. Everything here is built for that:
 
-- **Correct temperatures.** Read as full 16-bit values (two bytes, low byte first), verified
-  against a real grill.
-- **Survives short packets.** The grill occasionally answers with a truncated packet. Parsing
-  one either fails or invents fields; this integration retries instead. Before that fix, a
-  single short packet made every entity unavailable.
-- **One conversation at a time.** The grill answers a single client, so overlapping requests
-  lose messages. Requests go out one at a time, and one shared poller asks the grill once per
-  cycle on behalf of every entity rather than each entity polling for itself.
-- **Adaptive polling.** About every 10 seconds while cooking, every 60 seconds while off.
-- **Probes report `unknown` when unplugged** rather than 607 °F, the placeholder value the
-  grill sends when no probe is connected.
+- **Correct temperatures.** The grill reports temperature as a 16-bit number; this
+  integration reads all of it, verified against a real grill - a 350 °F pit shows 350 °F.
+- **Survives short packets.** The grill occasionally answers with a truncated packet;
+  the integration retries rather than failing or inventing values.
+- **One conversation at a time.** The grill answers one client at a time, so a single
+  shared poller asks it once per cycle on behalf of every entity.
+- **Adaptive polling.** About every 10 seconds while cooking, every 60 seconds while the
+  grill is off.
+- **Honest probes.** An unplugged probe reads `unknown`, not 607 °F (the placeholder the
+  grill sends when nothing is connected).
 
 ## Entities
 
