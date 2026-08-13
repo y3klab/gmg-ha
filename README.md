@@ -102,10 +102,7 @@ Protocol reference cross-checked against
 Thanks also to the **GMG Support team**, who took the time to answer one owner's
 unusually detailed questions about what the grill is doing and when.
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/jop0-grill-code-dark.svg">
-  <img alt="JoPº GRILL+CODE" src="docs/jop0-grill-code.svg" width="170">
-</picture>
+<img alt="JoPº GRILL+CODE" src="docs/jop0-grill-code-sticker.svg" width="180">
 
 Cooked up by the **JoPº GRILL+CODE** team. The JoPº logo is original artwork and is
 not covered by this repository's MIT license.
