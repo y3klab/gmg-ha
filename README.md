@@ -37,8 +37,8 @@ is the Home Assistant integration.
   polls once per cycle for every entity.
 - **No guessing:** a healthy status reply is 52 bytes, and short frames are retried,
   never parsed - parsing one either fails or invents fields.
-- **Trust, but verify:** the grill acknowledges nothing, so every write is read back
-  and compared - the dial never shows a number the grill didn't actually accept.
+- **Trust, but verify:** every write is read back and compared - the dial never shows
+  a number the grill didn't actually accept.
 - **Adaptive polling:** about every 10 seconds while the grill is on, every 60 while
   it's off - responsive during a cook, quiet overnight.
 - **Better data:** an unplugged probe reads `unknown`, not the grill's 607 °F
