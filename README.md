@@ -10,10 +10,15 @@ The code that talks to the grill over the network lives in
 [**gmg-local**](https://pypi.org/project/gmg-local/), a standalone library; this repository
 is the Home Assistant integration.
 
-## Built for long cooks
+## Who this is for
 
-A pellet cook runs for hours, and the point of watching it from Home Assistant is not
-having to think about the software while it runs. Everything here is built for that:
+This integration lives at the intersection of three circles: cooking on a Green Mountain
+Grill, running Home Assistant, and wanting to watch the numbers while the meat smokes.
+That is a small, specific crew - and if you are in it, welcome. This was built for you.
+
+What matters to that crew is what this aims at: delicious BBQ, beautiful Home Assistant
+dashboards, and the tasty stream of data connecting them. A pellet cook runs for hours,
+so the engineering's one job is to never need your attention while it runs:
 
 - **Correct temperatures.** The grill reports temperature as a 16-bit number; this
   integration reads all of it, verified against a real grill - a 350 °F pit shows 350 °F.
