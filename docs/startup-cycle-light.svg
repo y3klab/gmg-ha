@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 440" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 364" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
   <title>The 0-1-2-3 startup cycle - what the panel counts through, ending at 150 °F and RUNNING</title>
   <defs>
     <!-- the flame rail: JoP0's measured flame, yellow tongue to ground-shadow red;
@@ -64,4 +64,9 @@
   </g>
 
   <text x="16" y="348" font-size="15"><tspan fill="#57606a">at </tspan><tspan font-weight="bold" fill="#e13926">150 °F</tspan><tspan fill="#57606a"> the fire state flips to </tspan><tspan font-weight="bold" fill="#1a7f37">RUNNING</tspan><tspan fill="#57606a"> - normal temperature control begins</tspan></text>
+
+  <!-- the JoP0 mark, hand-set as text: capital J, lower o, capital P, and the
+       zero riding high like a degree mark (per the brand registry, a flat-set
+       "Jopo"/"JOP0" is not the mark). No pack artwork - license-clean. -->
+  <text x="880" y="348" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="bold"><tspan font-size="15" fill="#57606a">JoP</tspan><tspan font-size="10" dy="-5" fill="#f68d2a">0</tspan></text>
 </svg>
