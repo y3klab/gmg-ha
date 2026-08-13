@@ -129,6 +129,9 @@ Protocol reference cross-checked against
 [`brandenc40/green-mountain-grill`](https://github.com/brandenc40/green-mountain-grill) (Go) and
 `gmg` on PyPI by **Christopher McKay**.
 
+Cooked up by the **JoP⁰ GRILL+CODE** team - the family barbecue brand's first venture
+into software.
+
 Not affiliated with or endorsed by Green Mountain Grills.
 
 ## Licence
