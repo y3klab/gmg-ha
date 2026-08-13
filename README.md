@@ -10,15 +10,6 @@ The code that talks to the grill over the network lives in
 [**gmg-local**](https://pypi.org/project/gmg-local/), a standalone library; this repository
 is the Home Assistant integration.
 
-## Who this is for
-
-This integration lives at the intersection of three circles: cooking on a Green Mountain
-Grill, running Home Assistant, and wanting to watch the numbers while the meat smokes.
-That is a small, specific crew - and if you are in it, welcome. This was built for you.
-
-What matters to that crew is what this aims at: delicious BBQ, beautiful Home Assistant
-dashboards, and the tasty stream of data connecting them.
-
 ## Key features
 
 A pellet cook runs for hours, so the engineering's one job is to never need your
