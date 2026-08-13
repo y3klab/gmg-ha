@@ -109,6 +109,7 @@ brand family.
 
 ## License
 
-MIT - see [LICENSE](LICENSE).
+MIT - see [LICENSE](LICENSE). *The JoPº logo is original artwork and is not covered by
+the MIT license.*
 
 *Not affiliated with or endorsed by Green Mountain Grills.*
