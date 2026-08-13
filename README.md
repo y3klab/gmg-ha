@@ -96,15 +96,6 @@ then becomes the temperature readout while the fire becomes fully established:
 Stages 0-3 per [GMG's operating manuals](https://greenmountaingrills.com/manuals/); the
 `temp` rows and the 150 °F ending are this project's own measurements.
 
-## Known hardware quirks
-
-- **Probe targets are silently discarded while the grill is off.** Set a probe target of
-  203 °F while the grill is off: it reads back as 0, with no error. The integration blocks
-  the write rather than showing a target the grill never accepted.
-- **The label on the grill rates 150-550 °F; this integration exposes 150-500.** Whether that
-  ceiling comes from this integration's bounds or from the grill's own API is unverified, and
-  this integration does not raise a limit the grill's firmware may enforce.
-
 ## Credits
 
 **All the credit for getting these grills into Home Assistant belongs to
