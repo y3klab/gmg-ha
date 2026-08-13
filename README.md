@@ -66,9 +66,8 @@ Home Assistant needs to reach PyPI on first start after installing or upgrading.
 
 ## Credits
 
-**All the credit for getting these grills into Home Assistant belongs to
-[@jwhitby91](https://github.com/jwhitby91)** - his integration is what put our Green Mountain
-Grills into Home Assistant in the first place. 🙏
+**This project began as [@jwhitby91](https://github.com/jwhitby91)'s integration** - the
+one that first put our own Green Mountain Grills into Home Assistant. 🙏
 
 That repo has been inactive since January 2023. A Home Assistant compatibility fix was
 [offered back to it](https://github.com/jwhitby91/gmg_home_assistant/pull/11) and is still open;
