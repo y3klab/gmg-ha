@@ -4,7 +4,7 @@
 [![validate](https://github.com/y3klab/gmg-ha/actions/workflows/validate.yml/badge.svg)](https://github.com/y3klab/gmg-ha/actions/workflows/validate.yml)
 
 Control and monitor a **Green Mountain Grills** Wi-Fi pellet grill from Home Assistant, over
-your own network. No cloud account, no vendor API, no internet - just delicious data.
+your own network. No cloud account, no vendor API, no internet needed after setup - just delicious data.
 
 The code that talks to the grill over the network lives in
 [**gmg-local**](https://pypi.org/project/gmg-local/), a standalone library; this repository
@@ -17,10 +17,11 @@ is the Home Assistant integration.
   automation. Every write is read back and verified, so the dial only ever shows a
   target the grill actually accepted.
 - **The whole cook, on the record.** Temperatures, fire state, ignition progress,
-  warnings, and power state land in the recorder at the 10-second cook-time cadence -
-  every cook becomes a chart you can scroll years later.
-- **Automate the smoke.** Everything is a first-class entity: text yourself when the
-  ribs hit 195 °F, when the fire proves, or when the grill raises a warning.
+  warnings, and power state land in the recorder every
+  10 seconds while the grill is on - every cook becomes a chart in your Home Assistant
+  history.
+- **Automate the smoke.** Everything is an entity: text yourself when the ribs hit
+  195 °F, when the fire state turns Running, or when the grill raises a warning.
 - **Watch ignition happen.** The fire state progress sensor tracks the grill
   establishing its fire in real time - the whole sequence is documented in
   [The 0-1-2-3 startup cycle](docs/startup-cycle.md).
@@ -33,9 +34,9 @@ is the Home Assistant integration.
   the low byte wraps everything above 255 - a 350 °F pit reads as 94 °F. Both bytes
   are read, verified against a real grill.
 - **One conversation:** the grill answers a single client, and overlapping requests
-  lose datagrams. All I/O is serialized behind a lock, and one shared coordinator
-  polls once per cycle for every entity.
-- **No guessing:** a healthy status reply is 52 bytes, and short frames are retried,
+  lose datagrams. All I/O is serialized behind a lock, and one shared poller
+  asks the grill once per cycle for every entity.
+- **No guessing:** a healthy status reply is 52 bytes; shorter replies are retried,
   never parsed - parsing one either fails or invents fields.
 - **Trust, but verify:** every write is read back and compared - the dial never shows
   a number the grill didn't actually accept.
@@ -47,12 +48,12 @@ is the Home Assistant integration.
 ## Requirements
 
 - A **Green Mountain Grills Wi-Fi pellet grill** on your network - one per Home
-  Assistant, as the integration is single-instance. Developed against a Jim Bowie;
-  GMG's Wi-Fi models share the protocol.
+  Assistant, as the integration is single-instance. Developed against a Jim Bowie model;
+  the protocol references credited below cover GMG's other Wi-Fi models.
 - **Home Assistant 2026.5+.**
 - **UDP port 8080** allowed between Home Assistant and the grill - the port the grill
-  listens on. Only a concern across VLANs or firewalls; on one flat network there is
-  nothing to configure.
+  listens on. Only a concern across VLANs or firewalls; on a typical home network with no
+  VLANs there is nothing to configure.
 - **PyPI reachable on first start** after installing or upgrading - the
   [`gmg-local`](https://pypi.org/project/gmg-local/) dependency installs automatically.
 
@@ -64,7 +65,7 @@ Two ways - pick **one**:
   `https://github.com/y3klab/gmg-ha` as an **Integration** → install → restart Home Assistant.
 - **Manual:** copy `custom_components/gmg/` into your `config/custom_components/` and restart.
 
-Don't do both: a hand-placed copy silently wins over the HACS install on load order, and
+Don't do both: Home Assistant loads the hand-placed copy instead of the HACS one, and
 HACS updates stop taking effect.
 
 Then **Settings → Devices & Services → Add Integration → Green Mountain Grills**. It discovers by
@@ -82,7 +83,7 @@ will contact it directly.
 | **Temperature** | `sensor` | pit temperature on its own, for easy graphing |
 | **Probe 1 temperature** / **Probe 2 temperature** | `sensor` | probe readings; `unknown` when unplugged |
 | **Fire state** | `sensor` | Off / Startup / Running / Cool Down / Fail |
-| **Fire state progress** | `sensor` | how established the fire is: 0 → 100 in 25% steps as it lights, with 100 landing at 150 °F - the moment the fire state turns Running - then descending through Cool Down. Not the panel's 0-1-2-3 count, and not a pellet level |
+| **Fire state progress** | `sensor` | how established the fire is: 0 → 100 in 25% steps as it lights, reaching 100 when the pit reaches 150 °F - the moment the fire state turns Running - then descending through Cool Down. Not the 0-1-2-3 count the grill's panel shows during startup, and not a pellet level |
 | **Power state** | `sensor` | Off / On / Fan (Fan is the cool-down blower) |
 | **Warning** | `sensor` | the grill's own warning report |
 | **Probe 1 connection** / **Probe 2 connection** | `binary_sensor` | whether a probe is physically plugged in |
@@ -106,7 +107,7 @@ unusually detailed questions about what the grill is doing and when.
   <img alt="JoPº GRILL+CODE" src="docs/jop0-grill-code.svg" width="170">
 </picture>
 
-Cooked up by the **JoP⁰ GRILL+CODE** team. The JoPº logo is original artwork and is
+Cooked up by the **JoPº GRILL+CODE** team. The JoPº logo is original artwork and is
 not covered by this repository's MIT license.
 
 ## License
