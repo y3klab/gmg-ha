@@ -30,12 +30,11 @@ is the Home Assistant integration.
 
 ## Engineering
 
-- **True temperatures:** the grill sends little-endian 16-bit pairs, and reading only
-  the low byte wraps everything above 255 - a 350 °F pit reads as 94 °F. Both bytes
-  are read, verified against a real grill.
-- **One conversation:** the grill answers a single client, and overlapping requests
-  lose datagrams. All I/O is serialized behind a lock, and one shared poller
-  asks the grill once per cycle for every entity.
+- **True temperatures:** the grill sends each temperature as two bytes; reading only
+  one wraps every reading above 255 - a 350 °F pit reads as 94 °F. Both bytes are
+  read, verified against a real grill.
+- **One conversation:** the grill answers a single client at a time, so one shared
+  poller asks it once per cycle for every entity.
 - **No guessing:** a healthy status reply is 52 bytes; shorter replies are retried,
   never parsed - parsing one either fails or invents fields.
 - **Verified changes:** every change is read back and compared - the dial never shows
