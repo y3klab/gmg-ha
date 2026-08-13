@@ -26,10 +26,29 @@ is the Home Assistant integration.
   [The 0-1-2-3 startup cycle](docs/startup-cycle.md).
 - **Local and self-sufficient.** Discovered by UDP broadcast on your LAN (or direct IP
   across VLANs). No account to create; works when the internet doesn't.
-- **Engineered for the long haul.** Correct 16-bit temperatures (a 350 °F pit shows
-  350 °F), one conversation at a time through a single shared poller, retries on
-  truncated packets, adaptive polling (10 s cooking, 60 s off), and unplugged probes
-  that read `unknown` rather than a fake 607 °F.
+
+## For the geeks
+
+The details that make it feel solid, for those who know what they're looking at:
+
+- **16-bit temperatures, verified on hardware.** The grill sends temperatures as
+  little-endian 16-bit pairs. Read only the low byte and everything above 255 wraps -
+  a 350 °F pit reads as 94 °F. This integration reads both bytes, verified against a
+  real grill.
+- **One conversation at a time.** The grill answers a single client, and overlapping
+  requests lose datagrams. All I/O is serialized behind a lock, and one shared
+  coordinator polls once per cycle for every entity - no per-entity polling, no
+  contention.
+- **Truncated datagrams are retried, never parsed.** A healthy status reply is 52
+  bytes; the grill occasionally answers short. Parsing a short frame either fails or
+  invents fields, so the integration retries instead of guessing.
+- **Write, then verify.** The grill acknowledges nothing, so after every target write
+  the integration reads the value back and compares - the dial never shows a number
+  the grill didn't actually accept.
+- **Adaptive polling.** About every 10 seconds while the grill is on, every 60 while
+  it's off - responsive during a cook, quiet overnight.
+- **Honest unknowns.** An unplugged probe reads `unknown`, never the grill's 607 °F
+  placeholder.
 
 ## Requirements
 
