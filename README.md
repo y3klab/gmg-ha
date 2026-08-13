@@ -27,27 +27,21 @@ is the Home Assistant integration.
 - **Local and self-sufficient.** Discovered by UDP broadcast on your LAN (or direct IP
   across VLANs). No account to create; works when the internet doesn't.
 
-## Under the hood
+## Engineering
 
-The details that make it feel solid, for those who know what they're looking at:
-
-- **16-bit temperatures, verified on hardware.** The grill sends temperatures as
-  little-endian 16-bit pairs. Read only the low byte and everything above 255 wraps -
-  a 350 °F pit reads as 94 °F. This integration reads both bytes, verified against a
-  real grill.
-- **One conversation at a time.** The grill answers a single client, and overlapping
-  requests lose datagrams. All I/O is serialized behind a lock, and one shared
-  coordinator polls once per cycle for every entity - no per-entity polling, no
-  contention.
-- **Truncated datagrams are retried, never parsed.** A healthy status reply is 52
-  bytes; the grill occasionally answers short. Parsing a short frame either fails or
-  invents fields, so the integration retries instead of guessing.
-- **Write, then verify.** The grill acknowledges nothing, so after every target write
-  the integration reads the value back and compares - the dial never shows a number
-  the grill didn't actually accept.
-- **Adaptive polling.** About every 10 seconds while the grill is on, every 60 while
+- **True temperatures:** the grill sends little-endian 16-bit pairs, and reading only
+  the low byte wraps everything above 255 - a 350 °F pit reads as 94 °F. Both bytes
+  are read, verified against a real grill.
+- **One conversation:** the grill answers a single client, and overlapping requests
+  lose datagrams. All I/O is serialized behind a lock, and one shared coordinator
+  polls once per cycle for every entity.
+- **No guessing:** a healthy status reply is 52 bytes, and short frames are retried,
+  never parsed - parsing one either fails or invents fields.
+- **Trust, but verify:** the grill acknowledges nothing, so every write is read back
+  and compared - the dial never shows a number the grill didn't actually accept.
+- **Adaptive polling:** about every 10 seconds while the grill is on, every 60 while
   it's off - responsive during a cook, quiet overnight.
-- **Honest unknowns.** An unplugged probe reads `unknown`, never the grill's 607 °F
+- **Better data:** an unplugged probe reads `unknown`, not the grill's 607 °F
   placeholder.
 
 ## Requirements
