@@ -36,7 +36,7 @@ is the Home Assistant integration.
 - **Request coalescing:** the grill answers one client at a time, so the twelve
   entities never poll it separately - every update coalesces into one shared request
   per cycle.
-- **Atomic parsing:** a status reply parses whole or not at all. A healthy reply is
+- **Strict parsing:** a status reply parses whole or not at all. A healthy reply is
   52 bytes; anything shorter is retried, never parsed - so no field is ever invented.
 - **Read-back verification:** every change is read back from the grill and compared -
   the dial never shows a number the grill didn't actually accept.
