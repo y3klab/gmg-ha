@@ -48,10 +48,14 @@ attention while it runs:
 
 ## Install
 
-**HACS** (custom repository): HACS → Integrations → ⋮ → Custom repositories → add
-`https://github.com/y3klab/gmg-ha` as an **Integration** → install → restart Home Assistant.
+Two ways - pick **one**:
 
-**Manual:** copy `custom_components/gmg/` into your `config/custom_components/` and restart.
+- **HACS** (custom repository): HACS → Integrations → ⋮ → Custom repositories → add
+  `https://github.com/y3klab/gmg-ha` as an **Integration** → install → restart Home Assistant.
+- **Manual:** copy `custom_components/gmg/` into your `config/custom_components/` and restart.
+
+Don't do both: a hand-placed copy silently wins over the HACS install on load order, and
+HACS updates stop taking effect.
 
 Then **Settings → Devices & Services → Add Integration → Green Mountain Grills**. It discovers by
 UDP broadcast; if the grill is on a different VLAN, supply its IP address and the integration
