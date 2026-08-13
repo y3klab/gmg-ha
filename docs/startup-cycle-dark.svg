@@ -66,7 +66,7 @@
   <text x="16" y="348" font-size="15"><tspan fill="#7d8590">at </tspan><tspan font-weight="bold" fill="#df3a26">150 °F</tspan><tspan fill="#7d8590"> the fire state flips to </tspan><tspan font-weight="bold" fill="#7ddc7d">RUNNING</tspan><tspan fill="#7d8590"> - normal temperature control begins</tspan></text>
 
   <!-- the JoP0 mark, hand-set as text: capital J, lower o, capital P, and the
-       zero riding high like a degree mark (per the brand registry, a flat-set
-       "Jopo"/"JOP0" is not the mark). No pack artwork - license-clean. -->
-  <text x="880" y="348" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="bold"><tspan font-size="15" fill="#7d8590">JoP</tspan><tspan font-size="10" dy="-5" fill="#f78d29">0</tspan></text>
+       ordinal character riding high, exactly as the 2024 master types it (JoPº).
+       No pack artwork - license-clean. -->
+  <text x="880" y="348" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="bold"><tspan font-size="16" fill="#7d8590">JoP</tspan><tspan font-size="16" fill="#f78d29">º</tspan></text>
 </svg>
