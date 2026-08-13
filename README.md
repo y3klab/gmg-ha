@@ -25,8 +25,8 @@ attention while it runs:
 - **Automate the smoke.** Everything is a first-class entity: text yourself when the
   ribs hit 195 °F, when the fire proves, or when the grill raises a warning.
 - **Watch ignition happen.** The fire state progress sensor tracks the grill
-  establishing its fire in real time - the startup-cycle table below was documented
-  with it.
+  establishing its fire in real time - the whole sequence is documented in
+  [The 0-1-2-3 startup cycle](docs/startup-cycle.md).
 - **Local and self-sufficient.** Discovered by UDP broadcast on your LAN (or direct IP
   across VLANs). No account to create; works when the internet doesn't.
 - **Engineered for the long haul.** Correct 16-bit temperatures (a 350 °F pit shows
@@ -63,38 +63,6 @@ Home Assistant needs to reach PyPI on first start after installing or upgrading.
 | **Power state** | `sensor` | Off / On / Fan (Fan is the cool-down blower) |
 | **Warning** | `sensor` | the grill's own warning report |
 | **Probe 1 connection** / **Probe 2 connection** | `binary_sensor` | whether a probe is physically plugged in |
-
-## The 0-1-2-3 startup cycle
-
-When the grill lights, its panel counts 0-1-2-3 through a fixed-timer ignition sequence,
-then becomes the temperature readout while the fire becomes fully established:
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/startup-cycle-dark.svg">
-  <img alt="The 0-1-2-3 startup cycle: which hardware each panel stage runs, for how long, and the climb to 150 °F where the fire state changes to Running" src="docs/startup-cycle-light.svg">
-</picture>
-
-<details>
-<summary>Plain-text version</summary>
-
-```text
-┌─────────┬───────────────┬──────────────┬─────────────────────────────────────────┐
-│ display │ hardware      │ time         │ function                                │
-├─────────┼───────────────┼──────────────┼─────────────────────────────────────────┤
-│    0    │ auger         │ 45-60 s      │ load the firebox with pellets           │
-│    1    │ igniter       │ 90 s         │ heat the pellets                        │
-│    2    │ fan + igniter │ 30 s         │ fan the pellets into flame              │
-│    3    │ fan + igniter │ 30 s         │ establish proof of fire: a 5 °F rise    │
-│  temp   │ fan + igniter │ until +5 °F  │ still proving the fire                  │
-│  temp   │ fan + auger   │ until 150 °F │ igniter off; the auger feeds the fire   │
-└─────────┴───────────────┴──────────────┴─────────────────────────────────────────┘
-  at 150 °F the fire state flips to RUNNING - normal temperature control begins
-```
-
-</details>
-
-Stages 0-3 per [GMG's operating manuals](https://greenmountaingrills.com/manuals/); the
-`temp` rows and the 150 °F ending are this project's own measurements.
 
 ## Credits
 
