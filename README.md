@@ -66,10 +66,10 @@ Home Assistant needs to reach PyPI on first start after installing or upgrading.
 
 ## Credits
 
-**Inspired by [@jwhitby91](https://github.com/jwhitby91)'s integration** 🙏 That repo has
-been inactive since January 2023 and is no longer working. This integration is a
-from-scratch rewrite, with the protocol in
-[`gmg-local`](https://pypi.org/project/gmg-local/).
+**Inspired by [@jwhitby91](https://github.com/jwhitby91)'s
+[`gmg_home_assistant`](https://github.com/jwhitby91/gmg_home_assistant) integration**,
+which powered my GMG+HA dashboard for years. 🙏 This integration is a from-scratch
+rewrite, with the protocol in [`gmg-local`](https://pypi.org/project/gmg-local/).
 
 Protocol reference cross-checked against
 [`brandenco/green-mountain-grill`](https://github.com/brandenco/green-mountain-grill) (Go) and
