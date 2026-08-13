@@ -190,7 +190,7 @@ class GmgGrill(_GmgClimateBase):
 class GmgGrillProbe(_GmgClimateBase):
     """One food probe: a target temperature, and whether it is plugged in.
 
-    Modelled as a climate entity because it carries a setpoint, but it has no
+    Modeled as a climate entity because it carries a setpoint, but it has no
     modes of its own - the grill decides whether anything is cooking.
     """
 

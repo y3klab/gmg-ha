@@ -51,7 +51,7 @@ class GmgEntity(CoordinatorEntity):
             # grill's UN! reply, e.g. "UNJB02SUF0_2.3" - the library
             # deliberately does not strip the possible command echo.
             sw_version=self._grill.firmware_version or None,
-            # None (omitted) when the firmware prefix is unrecognised.
+            # None (omitted) when the firmware prefix is unrecognized.
             model=model_for(self._grill.firmware_version),
         )
 

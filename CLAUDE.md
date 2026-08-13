@@ -91,7 +91,7 @@ Home Assistant releases rather than from our own commits.
 - **Don't change the `gmg` domain.** It is permanent in practice - every entity_id and
   config entry depends on it.
 - **Don't rename an entity without a migration entry.**
-- **Don't add HA-specific behaviour to `gmg-local`** to make something here easier. That
+- **Don't add HA-specific behavior to `gmg-local`** to make something here easier. That
   library is deliberately usable without Home Assistant.
 
 ## Credits
