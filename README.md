@@ -129,8 +129,15 @@ Protocol reference cross-checked against
 [`brandenc40/green-mountain-grill`](https://github.com/brandenc40/green-mountain-grill) (Go) and
 `gmg` on PyPI by **Christopher McKay**.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/jop0-grill-code-dark.svg">
+  <img alt="JoPº GRILL+CODE" src="docs/jop0-grill-code.svg" width="170">
+</picture>
+
 Cooked up by the **JoP⁰ GRILL+CODE** team - the family barbecue brand's first venture
-into software.
+into software. The logo's flame is
+[designed by Freepik](https://www.freepik.com); the JoPº logo artwork is not covered by
+this repository's MIT licence.
 
 Not affiliated with or endorsed by Green Mountain Grills.
 
