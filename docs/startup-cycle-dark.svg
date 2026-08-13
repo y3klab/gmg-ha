@@ -4,10 +4,10 @@
     <!-- the flame rail: JoP0's measured flame, yellow tongue to ground-shadow red;
          the time axis runs cold-to-hot, so the ramp reads as the pit heating up. -->
     <linearGradient id="ramp" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0"    stop-color="#f8ef24"/>
-      <stop offset="0.45" stop-color="#f68d2a"/>
-      <stop offset="0.78" stop-color="#f15a25"/>
-      <stop offset="1"    stop-color="#e13926"/>
+      <stop offset="0"    stop-color="#fcee23"/>
+      <stop offset="0.45" stop-color="#f78d29"/>
+      <stop offset="0.78" stop-color="#f15b24"/>
+      <stop offset="1"    stop-color="#df3a26"/>
     </linearGradient>
   </defs>
 
@@ -63,10 +63,10 @@
     <line x1="0" y1="310" x2="880" y2="310"/>
   </g>
 
-  <text x="16" y="348" font-size="15"><tspan fill="#7d8590">at </tspan><tspan font-weight="bold" fill="#e13926">150 °F</tspan><tspan fill="#7d8590"> the fire state flips to </tspan><tspan font-weight="bold" fill="#7ddc7d">RUNNING</tspan><tspan fill="#7d8590"> - normal temperature control begins</tspan></text>
+  <text x="16" y="348" font-size="15"><tspan fill="#7d8590">at </tspan><tspan font-weight="bold" fill="#df3a26">150 °F</tspan><tspan fill="#7d8590"> the fire state flips to </tspan><tspan font-weight="bold" fill="#7ddc7d">RUNNING</tspan><tspan fill="#7d8590"> - normal temperature control begins</tspan></text>
 
   <!-- the JoP0 mark, hand-set as text: capital J, lower o, capital P, and the
        zero riding high like a degree mark (per the brand registry, a flat-set
        "Jopo"/"JOP0" is not the mark). No pack artwork - license-clean. -->
-  <text x="880" y="348" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="bold"><tspan font-size="15" fill="#7d8590">JoP</tspan><tspan font-size="10" dy="-5" fill="#f68d2a">0</tspan></text>
+  <text x="880" y="348" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="bold"><tspan font-size="15" fill="#7d8590">JoP</tspan><tspan font-size="10" dy="-5" fill="#f78d29">0</tspan></text>
 </svg>
