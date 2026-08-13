@@ -17,19 +17,31 @@ Grill, running Home Assistant, and wanting to watch the numbers while the meat s
 That is a small, specific crew - and if you are in it, welcome. This was built for you.
 
 What matters to that crew is what this aims at: delicious BBQ, beautiful Home Assistant
-dashboards, and the tasty stream of data connecting them. A pellet cook runs for hours,
-so the engineering's one job is to never need your attention while it runs:
+dashboards, and the tasty stream of data connecting them.
 
-- **Correct temperatures.** The grill reports temperature as a 16-bit number; this
-  integration reads all of it, verified against a real grill - a 350 °F pit shows 350 °F.
-- **Survives short packets.** The grill occasionally answers with a truncated packet;
-  the integration retries rather than failing or inventing values.
-- **One conversation at a time.** The grill answers one client at a time, so a single
-  shared poller asks it once per cycle on behalf of every entity.
-- **Adaptive polling.** About every 10 seconds while cooking, every 60 seconds while the
-  grill is off.
-- **Honest probes.** An unplugged probe reads `unknown`, not 607 °F (the placeholder the
-  grill sends when nothing is connected).
+## Key features
+
+A pellet cook runs for hours, so the engineering's one job is to never need your
+attention while it runs:
+
+- **Full climate control from Home Assistant.** The pit and both probes are climate
+  entities - set the pit temperature and probe done-targets from any dashboard or
+  automation. Every write is read back and verified, so the dial only ever shows a
+  target the grill actually accepted.
+- **The whole cook, on the record.** Temperatures, fire state, ignition progress,
+  warnings, and power state land in the recorder at the 10-second cook-time cadence -
+  every cook becomes a chart you can scroll years later.
+- **Automate the smoke.** Everything is a first-class entity: text yourself when the
+  ribs hit 195 °F, when the fire proves, or when the grill raises a warning.
+- **Watch ignition happen.** The fire state progress sensor tracks the grill
+  establishing its fire in real time - the startup-cycle table below was documented
+  with it.
+- **Local and self-sufficient.** Discovered by UDP broadcast on your LAN (or direct IP
+  across VLANs). No account to create; works when the internet doesn't.
+- **Engineered for the long haul.** Correct 16-bit temperatures (a 350 °F pit shows
+  350 °F), one conversation at a time through a single shared poller, retries on
+  truncated packets, adaptive polling (10 s cooking, 60 s off), and unplugged probes
+  that read `unknown` rather than a fake 607 °F.
 
 ## Entities
 
