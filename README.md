@@ -38,8 +38,8 @@ is the Home Assistant integration.
   per cycle.
 - **Atomic parsing:** a status reply parses whole or not at all. A healthy reply is
   52 bytes; anything shorter is retried, never parsed - so no field is ever invented.
-- **Verified changes:** every change is read back and compared - the dial never shows
-  a number the grill didn't actually accept.
+- **Read-back verification:** every change is read back from the grill and compared -
+  the dial never shows a number the grill didn't actually accept.
 - **Adaptive polling:** about every 10 seconds while the grill is on, every 60 while
   it's off - responsive during a cook, quiet overnight.
 - **No sentinel values:** an unplugged probe reads `unknown`, not 607 °F - the
