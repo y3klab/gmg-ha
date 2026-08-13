@@ -34,6 +34,18 @@ attention while it runs:
   truncated packets, adaptive polling (10 s cooking, 60 s off), and unplugged probes
   that read `unknown` rather than a fake 607 °F.
 
+## Requirements
+
+- A **Green Mountain Grills Wi-Fi pellet grill** on your network - one per Home
+  Assistant, as the integration is single-instance. Developed against a Jim Bowie;
+  GMG's Wi-Fi models share the protocol.
+- **Home Assistant 2026.5+.**
+- **UDP port 8080** allowed between Home Assistant and the grill - the port the grill
+  listens on. Only a concern across VLANs or firewalls; on one flat network there is
+  nothing to configure.
+- **PyPI reachable on first start** after installing or upgrading - the
+  [`gmg-local`](https://pypi.org/project/gmg-local/) dependency installs automatically.
+
 ## Install
 
 **HACS** (custom repository): HACS → Integrations → ⋮ → Custom repositories → add
@@ -43,11 +55,7 @@ attention while it runs:
 
 Then **Settings → Devices & Services → Add Integration → Green Mountain Grills**. It discovers by
 UDP broadcast; if the grill is on a different VLAN, supply its IP address and the integration
-will contact it directly. All traffic is UDP port **8080** - the port the grill listens on -
-so a firewall between Home Assistant and the grill must allow it.
-
-Requires Home Assistant **2026.5+**. The `gmg-local` dependency is installed automatically, so
-Home Assistant needs to reach PyPI on first start after installing or upgrading.
+will contact it directly.
 
 ## Entities
 
@@ -87,8 +95,8 @@ unusually detailed questions about what the grill is doing and when.
 Cooked up by the **JoP⁰ GRILL+CODE** team. The JoPº logo is original artwork and is
 not covered by this repository's MIT license.
 
-Not affiliated with or endorsed by Green Mountain Grills.
-
 ## License
 
 MIT - see [LICENSE](LICENSE).
+
+*Not affiliated with or endorsed by Green Mountain Grills.*
