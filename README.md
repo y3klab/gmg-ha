@@ -36,8 +36,8 @@ is the Home Assistant integration.
 - **Request coalescing:** the grill answers one client at a time, so the twelve
   entities never poll it separately - every update coalesces into one shared request
   per cycle.
-- **No guessing:** a healthy status reply is 52 bytes; shorter replies are retried,
-  never parsed - parsing one either fails or invents fields.
+- **Atomic parsing:** a status reply parses whole or not at all. A healthy reply is
+  52 bytes; anything shorter is retried, never parsed - so no field is ever invented.
 - **Verified changes:** every change is read back and compared - the dial never shows
   a number the grill didn't actually accept.
 - **Adaptive polling:** about every 10 seconds while the grill is on, every 60 while
