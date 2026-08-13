@@ -14,7 +14,7 @@ is the Home Assistant integration.
 
 - **Full climate control from Home Assistant.** The pit and both probes are climate
   entities - set the pit temperature and probe done-targets from any dashboard or
-  automation. Every write is read back and verified, so the dial only ever shows a
+  automation. Every change is read back and verified, so the dial only ever shows a
   target the grill actually accepted.
 - **The whole cook, on the record.** Temperatures, fire state, ignition progress,
   warnings, and power state land in the recorder every
@@ -38,7 +38,7 @@ is the Home Assistant integration.
   asks the grill once per cycle for every entity.
 - **No guessing:** a healthy status reply is 52 bytes; shorter replies are retried,
   never parsed - parsing one either fails or invents fields.
-- **Trust, but verify:** every write is read back and compared - the dial never shows
+- **Verified changes:** every change is read back and compared - the dial never shows
   a number the grill didn't actually accept.
 - **Adaptive polling:** about every 10 seconds while the grill is on, every 60 while
   it's off - responsive during a cook, quiet overnight.
