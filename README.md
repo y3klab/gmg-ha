@@ -34,16 +34,6 @@ attention while it runs:
   truncated packets, adaptive polling (10 s cooking, 60 s off), and unplugged probes
   that read `unknown` rather than a fake 607 °F.
 
-## Entities
-
-13 in total, for a grill with two probes:
-
-| domain | entities |
-|---|---|
-| `climate` | grill, probe 1, probe 2 |
-| `sensor` | grill / probe 1 / probe 2 temperature, fire state, warning, power state, fire state progress |
-| `binary_sensor` | probe 1 connection, probe 2 connection |
-
 ## Install
 
 **HACS** (custom repository): HACS → Integrations → ⋮ → Custom repositories → add
@@ -57,6 +47,22 @@ will contact it directly.
 
 Requires Home Assistant **2026.5+**. The `gmg-local` dependency is installed automatically, so
 Home Assistant needs to reach PyPI on first start after installing or upgrading.
+
+## Entities
+
+12 for a grill with two probes, all served by one shared poller:
+
+| entity | type | what it holds |
+|---|---|---|
+| **Grill** | `climate` | the pit: current temperature and its target |
+| **Probe 1** / **Probe 2** | `climate` | the meat probes: current temperature and a done-target |
+| **Temperature** | `sensor` | pit temperature on its own, for easy graphing |
+| **Probe 1 temperature** / **Probe 2 temperature** | `sensor` | probe readings; `unknown` when unplugged |
+| **Fire state** | `sensor` | Off / Startup / Running / Cool Down / Fail |
+| **Fire state progress** | `sensor` | how established the fire is: 0 → 100 in 25% steps as it lights, with 100 landing at 150 °F - the moment the fire state turns Running - then descending through Cool Down. Not the panel's 0-1-2-3 count, and not a pellet level |
+| **Power state** | `sensor` | Off / On / Fan (Fan is the cool-down blower) |
+| **Warning** | `sensor` | the grill's own warning report |
+| **Probe 1 connection** / **Probe 2 connection** | `binary_sensor` | whether a probe is physically plugged in |
 
 ## The 0-1-2-3 startup cycle
 
@@ -87,29 +93,8 @@ then becomes the temperature readout while the fire becomes fully established:
 
 </details>
 
-Stage-0 auger time varies by model and ambient temperature. Rows 0-3 are from
-[GMG's operating manuals](https://greenmountaingrills.com/manuals/), redrawn; the `temp`
-rows and the 150 °F ending are this project's own measurements. Stage 3's 30 seconds is
-how long the *display* shows a 3 - the proof-of-fire wait itself continues under the
-temperature readout (about 10 minutes on a measured cold start), and a pit that never
-rises 5 °F within 20 minutes shows `FAL` instead. The fire state changes to Running when
-the pit reaches **150 °F**, no matter what target temperature is set.
-
-## Fire state progress
-
-The grill reports a fire state - Startup, Running, Cool Down - and a progress value beside
-it. The `fire state progress` sensor exposes that value, byte 33 of the grill's status reply -
-what GMG's own cloud API calls `fireStateProgress`. It steps in four 25% increments through
-whatever state the grill is in: up through Startup, hitting 100 at the exact moment the grill
-switches to Running (150 °F, see above), then back down through Cool Down to 0 as the fan
-stops.
-
-**It is not the panel's 0-1-2-3 cycle.** On a measured cold start the panel finished its
-count while this sensor sat at 50; the value kept climbing for another 15 minutes while the
-fire established. No one has established what each 25% step physically measures, so the
-steps are deliberately left unlabeled. Other
-implementations label this byte as a pellet-hopper level; it is not - a hopper does not fill
-during ignition and empty when the fan stops.
+Stages 0-3 per [GMG's operating manuals](https://greenmountaingrills.com/manuals/); the
+`temp` rows and the 150 °F ending are this project's own measurements.
 
 ## Known hardware quirks
 
