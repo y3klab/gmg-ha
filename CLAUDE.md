@@ -96,6 +96,8 @@ Home Assistant releases rather than from our own commits.
 
 ## Credits
 
-See the README. Originally forked from `jwhitby91/gmg_home_assistant`, since substantially
-rewritten. The old fork is **archived rather than deleted**, because an open upstream PR
-still lives on one of its branches - deleting it would close that PR and destroy the diff.
+See the README. Inspired by `jwhitby91/gmg_home_assistant`; rewritten from scratch (the
+rewrite was measured - 8 non-trivial verbatim lines remained, all one-way-to-write-it
+socket boilerplate; see the private provenance note). The old fork is **archived rather
+than deleted**, because an open upstream PR still lives on one of its branches - deleting
+it would close that PR and destroy the diff.
