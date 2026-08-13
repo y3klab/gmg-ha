@@ -75,7 +75,7 @@ open. This integration is a from-scratch rewrite, with the protocol in
 [`gmg-local`](https://pypi.org/project/gmg-local/).
 
 Protocol reference cross-checked against
-[`brandenc40/green-mountain-grill`](https://github.com/brandenc40/green-mountain-grill) (Go) and
+[`brandenco/green-mountain-grill`](https://github.com/brandenco/green-mountain-grill) (Go) and
 `gmg` on PyPI by **Christopher McKay**.
 
 <picture>
