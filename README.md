@@ -134,12 +134,11 @@ Protocol reference cross-checked against
   <img alt="JoPº GRILL+CODE" src="docs/jop0-grill-code.svg" width="170">
 </picture>
 
-Cooked up by the **JoP⁰ GRILL+CODE** team - the family barbecue brand's first venture
-into software. The JoPº logo is original artwork and is not covered by this
-repository's MIT licence.
+Cooked up by the **JoP⁰ GRILL+CODE** team. The JoPº logo is original artwork and is
+not covered by this repository's MIT license.
 
 Not affiliated with or endorsed by Green Mountain Grills.
 
-## Licence
+## License
 
 MIT - see [LICENSE](LICENSE).
