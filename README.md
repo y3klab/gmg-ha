@@ -27,7 +27,7 @@ is the Home Assistant integration.
 - **Local and self-sufficient.** Discovered by UDP broadcast on your LAN (or direct IP
   across VLANs). No account to create; works when the internet doesn't.
 
-## For the geeks
+## Under the hood
 
 The details that make it feel solid, for those who know what they're looking at:
 
