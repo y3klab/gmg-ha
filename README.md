@@ -43,7 +43,8 @@ attention while it runs:
 
 Then **Settings → Devices & Services → Add Integration → Green Mountain Grills**. It discovers by
 UDP broadcast; if the grill is on a different VLAN, supply its IP address and the integration
-will contact it directly.
+will contact it directly. All traffic is UDP port **8080** - the port the grill listens on -
+so a firewall between Home Assistant and the grill must allow it.
 
 Requires Home Assistant **2026.5+**. The `gmg-local` dependency is installed automatically, so
 Home Assistant needs to reach PyPI on first start after installing or upgrading.
