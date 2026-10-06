@@ -169,7 +169,7 @@ def main() -> int:
     if not answered:
         print(
             "\nThe grill did not answer on any UDP port. A likely cause "
-            "is Server Mode: turn it off in the GMG app's Wi-Fi settings and run "
+            "is Server Mode: switch the grill to WiFi Mode in the GMG app and run "
             "this again. Either way, please paste the report into the issue."
         )
     return 0

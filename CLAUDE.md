@@ -64,6 +64,12 @@ firmware string lives on the device (``sw_version``), not in an entity.
   regression, and don't read a short clean window as a fix** - at 1 per 3.7 h a 30-minute
   sample proves nothing. Full analysis and the packet-capture test that would identify the
   emitting device are in the private notes.
+- **A grill in Server Mode is silent on the LAN** - reachable, but no UDP reply. The fix is
+  the GMG app's **WiFi Mode**; the newer GMG Prime app offers only Server Mode or Bluetooth,
+  so WiFi Mode means the older Green Mountain Grills app. Confirmed by 5 independent sources
+  (2026-10-06 audit), incl. a Trek PRIME 2.0 owner with identical symptoms. Suspect this first
+  for any "can't find my grill" report - but our own 1-per-3.7h grill fault also looks like
+  silence, so a single timeout is not Server Mode.
 - **`/api/config` `state` does not prove a restart happened.** It can return `RUNNING`
   seconds into a restart that hasn't begun. Gate on a log line timestamped after the
   command.

@@ -50,34 +50,42 @@ is the Home Assistant integration.
 - A **Green Mountain Grills Wi-Fi pellet grill** on your network - one per Home
   Assistant, as the integration is single-instance. Developed against a Jim Bowie model;
   the protocol references credited below cover GMG's other Wi-Fi models.
+- **The grill in WiFi Mode, not Server Mode.** **Required.** This integration talks to the
+  grill directly on your network. In Server Mode the grill routes everything through GMG's
+  cloud instead and stops answering locally - it shows up on your network but never replies,
+  so the integration cannot find or reach it. Switch it in the GMG app's Wi-Fi settings.
+  The newer **GMG Prime** app offers only Server Mode or a Bluetooth "Local Mode"; to get
+  WiFi Mode, set the grill up with the older **Green Mountain Grills** app (a Trek PRIME 2.0
+  owner reports this works). The trade-off: in WiFi Mode the GMG app reaches the grill only
+  while your phone is on your home Wi-Fi.
 - **Home Assistant 2026.5+.**
 - **UDP port 8080** allowed between Home Assistant and the grill - the port the grill
   listens on. Only a concern across VLANs or firewalls; on a typical home network with no
   VLANs there is nothing to configure.
-- **Server Mode off** in the GMG app's Wi-Fi settings. Server Mode sends everything through
-  GMG's cloud, and other local GMG projects report that the grill then stops answering on
-  your network - it shows up on the network but never replies.
 - **PyPI reachable on first start** after installing or upgrading - the
   [`gmg-local`](https://pypi.org/project/gmg-local/) dependency installs automatically.
 
 ## Install
 
-Two ways - pick **one**:
+1. **Put the grill in WiFi Mode, not Server Mode**, in the GMG app's Wi-Fi settings. Skip this
+   and the integration will not find the grill. GMG Prime app users: see
+   [Requirements](#requirements).
+2. **Install the integration** - pick **one** way:
+   - **HACS** (custom repository): HACS → Integrations → ⋮ → Custom repositories → add
+     `https://github.com/y3klab/gmg-ha` as an **Integration** → install → restart Home
+     Assistant.
+   - **Manual:** copy `custom_components/gmg/` into your `config/custom_components/` and
+     restart.
 
-- **HACS** (custom repository): HACS → Integrations → ⋮ → Custom repositories → add
-  `https://github.com/y3klab/gmg-ha` as an **Integration** → install → restart Home Assistant.
-- **Manual:** copy `custom_components/gmg/` into your `config/custom_components/` and restart.
-
-Don't do both: Home Assistant loads the hand-placed copy instead of the HACS one, and
-HACS updates stop taking effect.
-
-Then **Settings → Devices & Services → Add Integration → Green Mountain Grills**. It discovers by
-UDP broadcast; if the grill is on a different VLAN, supply its IP address and the integration
-will contact it directly.
+   Don't do both: Home Assistant loads the hand-placed copy instead of the HACS one, and
+   HACS updates stop taking effect.
+3. **Add it:** Settings → Devices & Services → Add Integration → **Green Mountain Grills**. It
+   discovers by UDP broadcast; if the grill is on a different VLAN, supply its IP address and
+   the integration will contact it directly.
 
 ## If the grill isn't found
 
-1. Check **Server Mode** is off in the GMG app's Wi-Fi settings.
+1. Check the grill is in **WiFi Mode, not Server Mode** - the most likely cause.
 2. Close the GMG app on every phone - the grill answers one client at a time.
 3. Still nothing? Run [`tools/gmg-probe.py`](tools/gmg-probe.py) from a computer on the
    grill's network and paste its report into an
