@@ -54,6 +54,9 @@ is the Home Assistant integration.
 - **UDP port 8080** allowed between Home Assistant and the grill - the port the grill
   listens on. Only a concern across VLANs or firewalls; on a typical home network with no
   VLANs there is nothing to configure.
+- **Server Mode off** in the GMG app's Wi-Fi settings. Server Mode sends everything through
+  GMG's cloud, and other local GMG projects report that the grill then stops answering on
+  your network - it shows up on the network but never replies.
 - **PyPI reachable on first start** after installing or upgrading - the
   [`gmg-local`](https://pypi.org/project/gmg-local/) dependency installs automatically.
 
@@ -71,6 +74,15 @@ HACS updates stop taking effect.
 Then **Settings → Devices & Services → Add Integration → Green Mountain Grills**. It discovers by
 UDP broadcast; if the grill is on a different VLAN, supply its IP address and the integration
 will contact it directly.
+
+## If the grill isn't found
+
+1. Check **Server Mode** is off in the GMG app's Wi-Fi settings.
+2. Close the GMG app on every phone - the grill answers one client at a time.
+3. Still nothing? Run [`tools/gmg-probe.py`](tools/gmg-probe.py) from a computer on the
+   grill's network and paste its report into an
+   [issue](https://github.com/y3klab/gmg-ha/issues). It only reads from the grill, never
+   changes anything, and masks the serial number.
 
 ## Entities
 
