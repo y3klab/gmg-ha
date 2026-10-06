@@ -8,10 +8,11 @@ in the report is masked.
 
 Before running: the grill plugged in and on Wi-Fi (it does not need to be
 cooking), the GMG app closed on every phone, and this computer on the same
-network as the grill. Then, with the grill's IP address from your router:
+network as the grill. Then run this, with GRILL-IP replaced by the grill's IP
+address from your router:
 
-    macOS / Linux:  python3 gmg-probe.py 192.168.1.50
-    Windows:        python gmg-probe.py 192.168.1.50
+    macOS / Linux:  python3 gmg-probe.py GRILL-IP
+    Windows:        python gmg-probe.py GRILL-IP
 
 Standard library only, Python 3.9+ (the python3 that ships with macOS). Nothing to install.
 """
@@ -19,6 +20,7 @@ Standard library only, Python 3.9+ (the python3 that ships with macOS). Nothing 
 from __future__ import annotations
 
 import argparse
+import ipaddress
 import platform
 import socket
 import sys
@@ -108,6 +110,15 @@ def main() -> int:
     parser.add_argument("--timeout", type=float, default=2.0, help="seconds per try")
     parser.add_argument("--tries", type=int, default=8, help="attempts per port")
     args = parser.parse_args()
+    try:
+        ipaddress.ip_address(args.host)
+    except ValueError:
+        print(
+            f"{args.host!r} is not an IP address. Replace GRILL-IP with your grill's "
+            "IP address (find it in your router's list of connected devices).",
+            file=sys.stderr,
+        )
+        return 2
 
     print("Probing the grill - this can take up to two minutes...", file=sys.stderr)
     report = [
