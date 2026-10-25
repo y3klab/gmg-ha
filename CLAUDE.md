@@ -35,6 +35,10 @@ firmware string lives on the device (``sw_version``), not in an entity.
   auto-closes such PRs.
 - **Version lives in `manifest.json`** and must match the release tag.
 - `climate.py` uses `_attr_*` declarations over property methods where HA supports it.
+- **Commit subjects are plain imperative, at most 72 characters.** No emoji and no
+  Conventional Commits type prefix; an optional leading scope word is fine. Everything else
+  goes in the body. 72 is where GitHub folds a subject and `git log --oneline` truncates on
+  an 80-column terminal.
 
 ## Gotchas
 
