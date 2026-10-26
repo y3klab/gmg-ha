@@ -3,7 +3,7 @@
 Every entity in this integration belongs to one device: the grill. Grouping
 them under a device registry entry is what gives Home Assistant somewhere to
 show them together, and what lets a user rename the grill once rather than
-thirteen times.
+fourteen times.
 """
 
 from __future__ import annotations
@@ -31,7 +31,7 @@ class GmgEntity(CoordinatorEntity):
     Home Assistant composes the rest from the device. So this class sets
     ``"Fire State Progress"`` rather than ``"Green Mountain Grill Fire State
     Progress"`` - the brand appears once, on the device, and follows a user's
-    rename instead of being frozen into thirteen strings.
+    rename instead of being frozen into fourteen strings.
     """
 
     _attr_has_entity_name = True

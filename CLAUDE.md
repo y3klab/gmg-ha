@@ -16,12 +16,12 @@ custom_components/gmg/
   __init__.py       setup, one shared coordinator per grill, entity migrations
   coordinator.py    DataUpdateCoordinator, adaptive poll interval
   climate.py        grill + 2 probes
-  sensor.py         7 sensors      binary_sensor.py  2 probe-connectivity sensors
+  sensor.py         8 sensors      binary_sensor.py  2 probe-connectivity + low pellet
   config_flow.py    UI setup, YAML import
   const.py  manifest.json  strings.json  translations/  brand/
 ```
 
-12 entities for a two-probe grill: 3 climate, 7 sensor, 2 binary_sensor. The
+14 entities for a two-probe grill: 3 climate, 8 sensor, 3 binary_sensor. The
 firmware string lives on the device (``sw_version``), not in an entity.
 
 ## Conventions
