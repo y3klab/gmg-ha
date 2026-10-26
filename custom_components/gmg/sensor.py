@@ -1,9 +1,14 @@
 """Green Mountain Grill diagnostic sensors.
 
 Surfaces grill health fields the API returns but the climate entities don't:
-fire state, fire percentage, warning code, and power state. Enum meanings are
-from the reverse-engineered GMG UDP protocol
+fire state, fire percentage, warning code, and power state. Fire and power
+state meanings are from the reverse-engineered GMG UDP protocol
 (ref: github.com/brandenc40/green-mountain-grill).
+
+The warning sensor names only codes observed on a real grill (see
+``WARN_LOW_PELLET`` in const.py). Any other code is Home Assistant's unknown
+state rather than a guessed label, and the raw value is published alongside
+it so an owner can report exactly what the grill sent.
 """
 from __future__ import annotations
 
@@ -14,22 +19,18 @@ from homeassistant.components.sensor import (
     SensorEntity,
     SensorStateClass,
 )
-from homeassistant.const import PERCENTAGE, UnitOfTemperature
+from homeassistant.const import EntityCategory, PERCENTAGE, UnitOfTemperature
 
 from .entity import GmgEntity
-from .const import DOMAIN
+from .const import DOMAIN, WARN_LOW_PELLET, WARN_NONE
 
 _LOGGER = logging.getLogger(__name__)
 
 # raw byte value -> human label
 FIRE_STATE = {0: "Default", 1: "Off", 2: "Startup", 3: "Running",
               4: "Cool Down", 5: "Fail", 198: "Cold Smoke"}
-WARN_CODE = {0: "None", 1: "Fan Overload", 2: "Auger Overload",
-             3: "Ignitor Overload", 4: "Low Voltage Battery",
-             5: "Fan Disconnect", 6: "Auger Disconnect",
-             7: "Ignitor Disconnect", 8: "Low Pellet"}
+WARN_CODE = {WARN_NONE: "None", WARN_LOW_PELLET: "Low Pellet"}
 POWER_STATE = {0: "Off", 1: "On", 2: "Fan", 3: "Cold Smoke"}
-UNKNOWN = "Unknown"
 
 
 def _build_entities(coordinator):
@@ -44,7 +45,9 @@ def _build_entities(coordinator):
         GmgEnumSensor(coordinator, "Fire State", "fire_state",
                       "fireState", FIRE_STATE, "mdi:fire"),
         GmgEnumSensor(coordinator, "Warning", "warn_code",
-                      "warnState", WARN_CODE, "mdi:alert"),
+                      "warnState", WARN_CODE, "mdi:alert",
+                      entity_category=EntityCategory.DIAGNOSTIC),
+        GmgWarnCodeSensor(coordinator),
         GmgEnumSensor(coordinator, "Power State", "power_state",
                       "powerState", POWER_STATE, "mdi:power"),
         GmgFirePercentSensor(coordinator),
@@ -74,22 +77,46 @@ class _GmgSensorBase(GmgEntity, SensorEntity):
 
 
 class GmgEnumSensor(_GmgSensorBase):
-    """An enum sensor mapping a raw status byte to a human label."""
+    """An enum sensor mapping a raw status byte to a human label.
+
+    A raw value with no mapping is None - Home Assistant's own unknown state -
+    never an invented option.
+    """
 
     _attr_device_class = SensorDeviceClass.ENUM
 
-    def __init__(self, coordinator, label, key_suffix, state_key, mapping, icon) -> None:
+    def __init__(self, coordinator, label, key_suffix, state_key, mapping, icon,
+                 entity_category=None) -> None:
         self._state_key = state_key
         self._mapping = mapping
-        self._attr_options = list(mapping.values()) + [UNKNOWN]
+        self._attr_options = list(mapping.values())
+        self._attr_entity_category = entity_category
         super().__init__(coordinator, label, key_suffix, icon)
 
     @property
     def native_value(self):
-        raw = self._state.get(self._state_key)
-        if raw is None:
-            return None
-        return self._mapping.get(raw, UNKNOWN)
+        return self._mapping.get(self._state.get(self._state_key))
+
+
+class GmgWarnCodeSensor(_GmgSensorBase):
+    """The raw warning code (bytes 24..27), exactly as the grill sent it.
+
+    The Warning sensor names only the codes that have been observed; this one
+    reports every value, 0 included, so an owner who sees an unknown warning
+    can report the number behind it. A code, not a quantity: no unit and no
+    state class.
+    """
+
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
+
+    def __init__(self, coordinator) -> None:
+        super().__init__(
+            coordinator, "Warning Code", "warn_code_raw", "mdi:alert-outline"
+        )
+
+    @property
+    def native_value(self):
+        return self._state.get("warnState")
 
 
 class GmgFirePercentSensor(_GmgSensorBase):

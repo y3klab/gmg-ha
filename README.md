@@ -33,7 +33,7 @@ is the Home Assistant integration.
 - **Full-width decoding:** the grill sends each temperature as two bytes; reading only
   one truncates the value and wraps every reading above 255 - a 350 °F pit reads as
   94 °F. Both bytes are read, verified against a real grill.
-- **Request coalescing:** the grill answers one client at a time, so the twelve
+- **Request coalescing:** the grill answers one client at a time, so the fourteen
   entities never poll it separately - every update coalesces into one shared request
   per cycle.
 - **Strict parsing:** a status reply parses whole or not at all. A healthy reply is
@@ -94,7 +94,7 @@ is the Home Assistant integration.
 
 ## Entities
 
-12 for a grill with two probes, all served by one shared poller:
+14 for a grill with two probes, all served by one shared poller:
 
 | entity | type | what it holds |
 |---|---|---|
@@ -105,8 +105,10 @@ is the Home Assistant integration.
 | **Fire state** | `sensor` | Off / Startup / Running / Cool Down / Fail |
 | **Fire state progress** | `sensor` | how established the fire is: 0 → 100 in 25% steps as it lights, reaching 100 when the pit reaches 150 °F - the moment the fire state turns Running - then descending through Cool Down. Not the 0-1-2-3 count the grill's panel shows during startup, and not a pellet level |
 | **Power state** | `sensor` | Off / On / Fan (Fan is the cool-down blower) |
-| **Warning** | `sensor` | the grill's own warning report |
+| **Warning** | `sensor` | the grill's own warning report: None or Low Pellet. Any other code shows as `unknown`, because no other code has been observed and named yet |
+| **Warning code** | `sensor` | the raw warning number the grill sent: 0 for none, 128 for low pellet. If **Warning** ever shows `unknown`, this is the number to report in an [issue](https://github.com/y3klab/gmg-ha/issues) |
 | **Probe 1 connection** / **Probe 2 connection** | `binary_sensor` | whether a probe is physically plugged in |
+| **Low pellet** | `binary_sensor` | on when the grill raises its low pellet alarm; the one to automate and notify on |
 
 ## Credits
 
