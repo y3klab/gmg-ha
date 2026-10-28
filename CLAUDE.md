@@ -38,8 +38,9 @@ firmware string lives on the device (``sw_version``), not in an entity.
 - **Commit subjects are plain imperative, at most 72 characters.** The subject is one
   plain, clear sentence describing the change, with no prefix of any kind: no emoji, no type
   word such as `docs:` or `fix:`, and no scope or area word. Example: "Fix the probe
-  read-back check". PR titles follow the same rule. Everything else goes in the body. 72 is where GitHub folds a subject and `git log --oneline` truncates on
-  an 80-column terminal.
+  read-back check". PR titles follow the same rule. Everything else goes in the body. 72
+  is where GitHub folds a subject and `git log --oneline` truncates on an 80-column
+  terminal.
 
 ## Gotchas
 
